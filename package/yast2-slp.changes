@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar  5 15:50:51 CET 2004 - nashif@suse.de
+
+- stricter types
+- 2.9.3
+
+-------------------------------------------------------------------
 Wed Feb 25 04:31:06 CET 2004 - nashif@suse.de
 
 - Add function to register services via /etc/slp.reg.d
