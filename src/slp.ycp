@@ -1,3 +1,13 @@
+/**
+ * File:	clients/slp.ycp
+ * Package:	SLP
+ * Summary:	SLP Browser
+ * Authors:	Anas Nashif <nashif@suse.de>
+ *
+ * $Id$
+ *
+ * Browse SLP services
+ */
 {
     import "SLP";
     textdomain "slp";
@@ -163,4 +173,5 @@
 
     UI::CloseDialog();
     return input;
+    // EOF
 }

@@ -1,3 +1,12 @@
+/**
+ * File:	modules/SLP.ycp
+ * Package:	SLP Browser / Agent
+ * Summary:	Access to SLP Agent functions
+ * Authors:	Anas Nashif <nashif@suse.de>
+ *
+ * $Id$
+ *
+ */
 {
 
     module "SLP";
@@ -38,12 +47,23 @@
         return Types;
     }
 
+
+    /**
+      * Find attributes of a service
+      * @param string service url or type
+      * @return list attributes
+      */
     global define list<string> FindAttrs ( string pcURLOrServiceType ) ``{
         list<string> Attrs = (list<string>) SCR::Read(.slp.findattrs,
                                 $["pcURLOrServiceType":pcURLOrServiceType] );
         return Attrs;
     }
 
+    /**
+      * Attribute summary
+      * @param list<string> attribute list
+      * @result string summary
+      */
     global define string AttrSummary (list<string> Attrs) ``{
        string summary = "";
        summary = Summary::AddHeader(summary, _("Attributes"));
@@ -59,11 +79,25 @@
        return summary;
     }
 
-
-
+    /**
+      * Register service with SLP
+      * @param string service
+      * @return boolean
+      */
     global define boolean Reg(string service) ``{
 
         boolean ret = (boolean)SCR::Execute(.slp.reg, service);
+        return ret;
+    }
+
+    /**
+      * Deregister service with SLP
+      * @param string service
+      * @return boolean
+      */
+    global define boolean DeReg(string service) ``{
+
+        boolean ret = (boolean)SCR::Execute(.slp.dereg, service);
         return ret;
     }
 }
