@@ -19,14 +19,15 @@
 
     /**
       * Issue the query for services
-      * @param string The Service Type String, including authority string if
+      * @param pcServiceType The Service Type String, including authority string if
       * any, for the request, such as can be discovered using  SLPSrvTypes(). 
       * This could be, for example "service:printer:lpr" or "service:nfs".
-      * @param string comma separated  list of scope names to search for
+      * @param pcScopeList comma separated  list of scope names to search for
       * service types.
       * @return list<map> List of Services
       */
-    global define list<map> FindSrvs( string pcServiceType, string pcScopeList) ``{
+    global define list<map> FindSrvs( string pcServiceType, string pcScopeList)
+    {
         list<map> Srvs = (list<map>) SCR::Read(.slp.findsrvs,
                 $["pcServiceType":pcServiceType, "pcScopeList": pcScopeList] );
         y2debug("FindSrvs: %1",  Srvs);
@@ -35,16 +36,20 @@
 
     /**
       * Issues an SLP service type request for service types in the scopes
-      * indicated by the pcScopeList. If the naming authority is "*", then
+      * indicated by the pcScopeList.
+      *
+      * If the naming authority is "*", then
       * results are returned for all naming authorities.  If the naming
       * authority is the empty string, i.e.  "", then the default naming
       * authority, "IANA", is used.
-      * @param string The naming authority to search.
-      * @param string comma separated  list of scope names to search for
+      *
+      * @param pcNamingAuthority The naming authority to search.
+      * @param pcScopeList  comma separated  list of scope names to search for
       * service types.
       * @return list<string> Service Types
       */
-    global define list<string> FindSrvTypes ( string pcNamingAuthority , string pcScopeList) ``{
+    global define list<string> FindSrvTypes ( string pcNamingAuthority , string pcScopeList)
+    {
         list<string> Types = (list<string>) SCR::Read(.slp.findsrvtypes,
                                 $["pcNamingAuthority":pcNamingAuthority ,
                                   "pcScopeList": pcScopeList] );
@@ -55,10 +60,11 @@
 
     /**
       * Find attributes of a service
-      * @param string service url or type
-      * @return list attributes
+      * @param pcURLOrServiceType service url or type
+      * @return list<string> attributes
       */
-    global define list<string> FindAttrs ( string pcURLOrServiceType ) ``{
+    global define list<string> FindAttrs ( string pcURLOrServiceType )
+    {
         list<string> Attrs = (list<string>) SCR::Read(.slp.findattrs,
                                 $["pcURLOrServiceType":pcURLOrServiceType] );
         return Attrs;
@@ -67,11 +73,11 @@
 
     /**
       * Find attributes of a service and return a map
-      * @param string service url or type
-      * @return map<string, string> attributes
+      * @param pcURLOrServiceType service url or type
+      * @return map<string,string> attributes
       */
     global define map<string,string> GetAttrMap(string pcURLOrServiceType)
-        ``{
+    {
 
             list<string> Attrs = (list<string>) SCR::Read(.slp.findattrs,
                     $["pcURLOrServiceType":pcURLOrServiceType] );
@@ -85,10 +91,11 @@
 
     /**
       * Attribute summary
-      * @param list<string> attribute list
-      * @result string summary
+      * @param Attrs attribute list
+      * @return string summary
       */
-    global define string AttrSummary (list<string> Attrs) ``{
+    global define string AttrSummary (list<string> Attrs)
+    {
        string summary = "";
        summary = Summary::AddHeader(summary, _("Attributes"));
        summary = Summary::OpenList      ( summary );
@@ -105,21 +112,22 @@
 
     /**
       * Register service with SLP
-      * @param string service
-      * @return boolean
+      * @param service Service to be registered
+      * @return boolean True on success
       */
-    global define boolean Reg(string service) ``{
-
+    global define boolean Reg(string service)
+    {
         boolean ret = (boolean)SCR::Execute(.slp.reg, service);
         return ret;
     }
 
     /**
       * Deregister service with SLP
-      * @param string service
-      * @return boolean
+      * @param service Service to be deregistered
+      * @return boolean True on success
       */
-    global define boolean DeReg(string service) ``{
+    global define boolean DeReg(string service)
+    {
 
         boolean ret = (boolean)SCR::Execute(.slp.dereg, service);
         return ret;
@@ -127,12 +135,13 @@
 
     /**
       * Register service with SLP using a reg file
-      * @param string service
-      * @param map attr
-      * @param string regfile
-      * @return boolean
+      * @param service The service to be registered
+      * @param attr Attributes
+      * @param regfile Reg File
+      * @return boolean True on Success
       */
-    global define boolean RegFile(string service, map<string,string> attr, string regfile) ``{
+    global define boolean RegFile(string service, map<string,string> attr, string regfile)
+    {
         list<string> slp = [];
         slp=add(slp, service);
         foreach(string k, string v , attr, ``{
@@ -147,20 +156,21 @@
 
     /**
       * De-Register service with SLP by removing the reg file
-      * @param string regfile
-      * @return boolean
+      * @param regfile The service to be deregistered
+      * @return boolean True on success
       */
-    global define boolean DeRegFile(string regfile) ``{
-
+    global define boolean DeRegFile(string regfile)
+    {
         boolean ret = (boolean)SCR::Execute(.target.remove, regfile);
         return ret;
     }
     /**
      * Match Srv Type and return all data
-     * @param string match string
+     * @param match match string
      * @return list<map> list of services matching with all relevant data
      */
-    global define list<map> MatchType (string match ) {
+    global define list<map> MatchType (string match )
+    {
         list<string> t = FindSrvTypes("*", "");
         list<map> ret = [];
         foreach(string type , t, {

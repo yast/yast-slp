@@ -23,6 +23,6 @@ Summary:	-
 @plugindir@/libpy2ag_slp.so
 @plugindir@/libpy2ag_slp.la
 @clientdir@/slp.ycp
-@desktopdir@/slp.desktop
+#@desktopdir@/slp.desktop
 @moduledir@/SLP.y*
 %doc @docdir@
