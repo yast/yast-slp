@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 25 04:31:06 CET 2004 - nashif@suse.de
+
+- Add function to register services via /etc/slp.reg.d
+- 2.9.2
+
+-------------------------------------------------------------------
 Mon Feb 23 23:03:01 CET 2004 - nashif@suse.de
 
 - Added some caching, 
