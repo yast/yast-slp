@@ -109,19 +109,10 @@
                     )
             );
 
-    string title = _("SLP Browser");
-    Wizard::CreateDialog();
-
-    Wizard::SetContentsButtons(title, contents, "", Label::BackButton(),
-            Label::FinishButton());
-
-    Wizard::HideAbortButton();
-    Wizard::DisableBackButton();
-
     list<string> typeResponse = SLP::FindSrvTypes("*", "");
 
     treeItems = fillTree(typeResponse);
-    UI::ReplaceWidget(`id(`helpSpace) ,
+    term types =
             `VBox(
                 `Tree(
                     `id(`tree),
@@ -129,8 +120,17 @@
                     _("Service Types"),
                     treeItems
                     ),
-                `VSpacing(1))
-            );
+                `VSpacing(1)
+                );
+    string title = _("SLP Browser");
+    Wizard::OpenCustomDialog(types, Wizard::BackAbortNextButtonBox());
+
+    Wizard::SetContentsButtons(title, contents, "", Label::BackButton(),
+            Label::FinishButton());
+
+    Wizard::HideAbortButton();
+    Wizard::DisableBackButton();
+
 
 
     any input = nil;
