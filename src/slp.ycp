@@ -102,7 +102,7 @@
     term contents =
         `Top(
                 `VBox(
-                    `Table( `id( `table ), `opt( `keepSorting ),
+                    `Table( `id( `table ), `opt( `notify,  `immediate),
                         `header( _("Type"), _("URL"), _("Lifetime") ),
                         tableItems ),
                     `RichText(`id(`attr),  "" )
@@ -138,34 +138,56 @@
     map attrcache = $[];
     repeat {
 
+        string srvtype = "";
+        string srv = "";
         input = Wizard::UserInput();
+        y2debug("input: %1", input);
+        if (input == `tree)
+            srvtype = (string) UI::QueryWidget(`id(`tree), `CurrentItem);
+        else if (input == `table )
+            srv = (string) UI::QueryWidget(`id(`table), `CurrentItem);
+        y2debug("srvtype: %1", srvtype );
+        y2debug("srv: %1", srv );
+        list<map> srvsResponse = [];
+        if(haskey(cache, srvtype))
+        {
+            srvsResponse = cache[srvtype]:[];
+        }
+        else
+        {
+            srvsResponse = SLP::FindSrvs(srvtype , "");
+            cache[srvtype] = srvsResponse;
+        }
+        tableItems = fillTable(srvsResponse);
+
+        list<string> attr = [];
+        string sum = "";
+
+        foreach(map s , srvsResponse, ``{
+                string srvurl = s["srvurl"]:"";
+                if(haskey(attrcache, srvurl))
+                {
+                attr = attrcache[srvurl]:[];
+                }
+                else
+                {
+                y2debug("s: %1", s);
+                attr = SLP::FindAttrs(srvurl);
+                y2debug("attr: %1", attr);
+                attrcache[srvurl] = attr;
+                }
+                });
+
         if (input == `tree)
         {
-            string service = (string) UI::QueryWidget(`id(`tree), `CurrentItem);
-            list<map> srvsResponse = [];
-            if(haskey(cache, service))
-            {
-                srvsResponse = cache[service]:[];
-            }
-            else
-            {
-                srvsResponse = SLP::FindSrvs(service , "");
-                cache[service] = srvsResponse;
-            }
-            tableItems = fillTable(srvsResponse);
-
-            list<string> attr = [];
-            if(haskey(attrcache, service))
-            {
-                attr = attrcache[service]:[];
-            }
-            else
-            {
-                attr = SLP::FindAttrs(service);
-                attrcache[service] = attr;
-            }
-            string sum = SLP::AttrSummary(attr);
             UI::ChangeWidget(`id(`table), `Items, tableItems);
+            srv = srvsResponse[0,"srvurl"]:"xxx";
+            sum = SLP::AttrSummary(attrcache[srv]:[]);
+            UI::ChangeWidget(`id(`attr), `Value, sum);
+        }
+        else if (input == `table )
+        {
+            sum = SLP::AttrSummary(attrcache[srv]:[]);
             UI::ChangeWidget(`id(`attr), `Value, sum);
         }
 
