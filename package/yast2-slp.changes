@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Feb 23 23:03:01 CET 2004 - nashif@suse.de
+
+- Added some caching, 
+- fixed showing attributes
+- 2.9.1
+
+-------------------------------------------------------------------
 Sun Feb  8 11:24:05 2004 - nashif@suse.de
 
 - Initial version
