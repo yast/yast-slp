@@ -28,6 +28,64 @@ SlpAgent::~SlpAgent()
 }
 
 const YCPList
+splitAttrstring (const YCPString &s, const YCPString &c)
+{
+
+    if (s.isNull ())
+    {
+        return YCPNull ();
+    }
+
+    if (c.isNull ())
+    {
+        ycp2error ("Cannot split string using 'nil'");
+        return YCPNull ();
+    }
+
+    YCPList ret;
+
+    string ss = s->value ();
+    string sc = c->value ();
+
+    if (ss.empty () || sc.empty ())
+        return ret;
+
+    string::size_type spos = 0;                 // start pos
+    string::size_type epos = 0;                 // end pos
+    string::size_type ppos = 0;                 // ")" pos
+
+    while (true)
+    {
+        epos = ss.find_first_of (sc, spos);
+        ppos = ss.find_first_of (")", spos);
+        if (epos != ppos + 1 && epos != string::npos)
+            epos = ss.find_first_of (sc, ppos +1);
+
+        if (epos == string::npos)       // break if not found
+        {
+            ret->add (YCPString (string (ss, spos)));
+            break;
+        }
+
+        if (spos == epos)
+            ret->add (YCPString (""));
+        else
+            ret->add (YCPString (string (ss, spos, epos - spos)));      // string piece w/o delimiter
+
+        spos = epos + 1;        // skip c in s
+
+        if (spos == ss.size ()) // c was last char
+        {
+            ret->add (YCPString (""));  // add "" and break
+            break;
+        }
+    }
+
+
+    return ret;
+}
+
+const YCPList
 splitstring (const YCPString &s, const YCPString &c)
 {
 
@@ -147,7 +205,7 @@ MyAttrCallback(SLPHandle hslp,
 
     if(errcode == SLP_OK)
     {
-        Result =  splitstring(YCPString(attrlist), YCPString(",") );
+        Result =  splitAttrstring(YCPString(attrlist), YCPString(",") );
     }
 
     return SLP_TRUE;

@@ -35,12 +35,12 @@
     define list<map> createTreeItem(list<map> Tree, string srvType, list<string> Sub) ``{
 
 
-        Wizard::AddTreeItem(Tree, "", srvType, "service:" + srvType );
+        Tree = Wizard::AddTreeItem(Tree, "", srvType, "service:" + srvType );
         Sub = filter(string s, Sub, ``(s!=""));
         foreach(string s, Sub, ``{
                 term si = `item();
                 string Id = "service:" + srvType + ":" + s;
-                Wizard::AddTreeItem(Tree, "service:" + srvType, s , Id);
+                Tree =Wizard::AddTreeItem(Tree, "service:" + srvType, s , Id);
                 });
 
         return Tree;
@@ -108,6 +108,7 @@
     Wizard::CreateTreeDialog();
     Wizard::SetDesktopIcon("slp");
     list<map> Tree = fillTree(typeResponse);
+    y2debug("Tree=%1", Tree);
     Wizard::CreateTree(Tree, _("Service Types") );
 
     string help = dgettext("base", "No help available");
@@ -184,8 +185,7 @@
             sum = SLP::AttrSummary(attrcache[srv]:[]);
             UI::ChangeWidget(`id(`attr), `Value, sum);
         }
-
-    } until (input == `next || input == `abort || input == `back );
+    } until (input == `next || input == `abort || input == `cancel);
 
     UI::CloseDialog();
     return input;

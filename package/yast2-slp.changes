@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Mon Jun  7 06:55:01 CEST 2004 - nashif@suse.de
+
+- Fixed attribute summary when showing list attributes (#41707)
+- 2.9.11
+
+-------------------------------------------------------------------
+Mon Apr 26 13:53:50 CEST 2004 - nashif@suse.de
+
+- abort on close window event (#39370)
+- 2.9.10
+
+-------------------------------------------------------------------
+Tue Apr  6 20:48:28 CEST 2004 - nashif@suse.de
+
+- Fixed splitting of returns attribute string (#38525)
+- 2.9.9
+
+-------------------------------------------------------------------
+Tue Apr  6 16:01:25 CEST 2004 - nashif@suse.de
+
+- Fixed tree widget in ncurses mode (#38493)
+- 2.9.8
+
+-------------------------------------------------------------------
 Sat Apr  3 20:40:31 CEST 2004 - nashif@suse.de
 
 - Use new tree wizard (#37581) 
