@@ -28,30 +28,22 @@
                 );
         return tabitem;
     }
-    define term createTreeItem(string srvType, list<string> Sub) ``{
 
-        term treeitem = `item();
+    /**
+     * Process Tree Items
+     */
+    define list<map> createTreeItem(list<map> Tree, string srvType, list<string> Sub) ``{
 
+
+        Wizard::AddTreeItem(Tree, "", srvType, "service:" + srvType );
         Sub = filter(string s, Sub, ``(s!=""));
-        list subitems = maplist(string s, Sub, ``{
+        foreach(string s, Sub, ``{
                 term si = `item();
                 string Id = "service:" + srvType + ":" + s;
-                si = `item(`id(Id), s);
-                return si;
+                Wizard::AddTreeItem(Tree, "service:" + srvType, s , Id);
                 });
-        if (size(subitems) > 0 )
-        {
-        treeitem = `item(
-                `id( "service:" + srvType),
-                srvType, subitems
-                );
-        } else {
-        treeitem = `item(
-                `id( "service:" + srvType),
-                srvType
-                );
-        }
-        return treeitem;
+
+        return Tree;
     }
 
     define list fillTable(list<map> response) ``{
@@ -83,13 +75,14 @@
     }
 
 
-    define list fillTree(list<string> typeResponse) ``{
+    define list<map> fillTree(list<string> typeResponse) ``{
+        list<map> Tree = [];
         map<string, list<string> > data = processTree(typeResponse);
-        list items = maplist(string type, list<string> sub,  data, ``{
-                return(createTreeItem(type, sub));
+        foreach(string type, list<string> sub,  data, ``{
+                Tree = createTreeItem(Tree, type, sub);
                 });
 
-        return items;
+        return Tree;
     }
 
 
@@ -111,21 +104,14 @@
 
     list<string> typeResponse = SLP::FindSrvTypes("*", "");
 
-    treeItems = fillTree(typeResponse);
-    term types =
-            `VBox(
-                `Tree(
-                    `id(`tree),
-                    `opt(`notify,`vstretch),
-                    _("Service Types"),
-                    treeItems
-                    ),
-                `VSpacing(1)
-                );
     string title = _("SLP Browser");
-    Wizard::OpenCustomDialog(types, Wizard::BackAbortNextButtonBox());
+    Wizard::CreateTreeDialog();
+    Wizard::SetDesktopIcon("slp");
+    list<map> Tree = fillTree(typeResponse);
+    Wizard::CreateTree(Tree, _("Service Types") );
 
-    Wizard::SetContentsButtons(title, contents, "", Label::BackButton(),
+    string help = dgettext("base", "No help available");
+    Wizard::SetContentsButtons(title, contents, help, Label::BackButton(),
             Label::FinishButton());
 
     Wizard::HideAbortButton();
@@ -140,12 +126,20 @@
 
         string srvtype = "";
         string srv = "";
-        input = Wizard::UserInput();
+        map event = UI::WaitForEvent();
+        input = event["ID"]:nil;
+        if (input == `wizardTree)
+            input = UI::QueryWidget(`id(`wizardTree), `CurrentItem);
+
         y2debug("input: %1", input);
-        if (input == `tree)
-            srvtype = (string) UI::QueryWidget(`id(`tree), `CurrentItem);
+        if (is(input, string))
+        {
+            srvtype = Wizard::QueryTreeItem();
+        }
         else if (input == `table )
+        {
             srv = (string) UI::QueryWidget(`id(`table), `CurrentItem);
+        }
         y2debug("srvtype: %1", srvtype );
         y2debug("srv: %1", srv );
         list<map> srvsResponse = [];
@@ -178,7 +172,7 @@
                 }
                 });
 
-        if (input == `tree)
+        if (is(input, string))
         {
             UI::ChangeWidget(`id(`table), `Items, tableItems);
             srv = srvsResponse[0,"srvurl"]:"xxx";
