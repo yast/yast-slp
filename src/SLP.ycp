@@ -1,0 +1,40 @@
+{
+
+    module "SLP";
+    textdomain "slp";
+    import "Summary";
+    import "HTML";
+
+    global define list<map> FindSrvs( string pcServiceType) ``{
+        list<map> Srvs = (list<map>) SCR::Execute(.slp.findsrvs,
+                $["pcServiceType":pcServiceType] );
+        return Srvs;
+    }
+
+    global define list<string> FindSrvTypes ( string pcNamingAuthority ) ``{
+        list<string> Types = (list<string>) SCR::Execute(.slp.findsrvtypes,
+                                $["pcNamingAuthority":pcNamingAuthority] );
+        return Types;
+    }
+
+    global define list<string> FindAttrs ( string pcURLOrServiceType ) ``{
+        list<string> Attrs = (list<string>) SCR::Execute(.slp.findattrs,
+                                $["pcURLOrServiceType":pcURLOrServiceType] );
+        return Attrs;
+    }
+
+    global define string AttrSummary (list<string> Attrs) ``{
+       string summary = "";
+       summary = Summary::AddHeader(summary, _("Attributes"));
+       summary = Summary::OpenList      ( summary );
+       foreach(string a, Attrs, ``{
+               string s = substring(a, 1, size(a) - 2 );
+               list aa = splitstring(s, "=");
+               summary = Summary::AddListItem   ( summary, sformat("%1: %2",
+                   HTML::Bold(aa[0]:""), aa[1]:"") );
+               });
+
+       summary = Summary::CloseList     ( summary );
+       return summary;
+    }
+}

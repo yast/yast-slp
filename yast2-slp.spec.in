@@ -1,0 +1,26 @@
+@HEADER-COMMENT@
+# neededforbuild gpp libgpp libxcrypt libxcrypt-devel yast2-devel-packages openslp openslp-devel yast2-xml
+
+@HEADER@
+Summary:	-
+
+%description
+-
+
+@PREP@
+
+@BUILD@
+
+@INSTALL@
+
+@CLEAN@
+
+%files
+%defattr(-,root,root)
+@scrconfdir@/*.scr
+@plugindir@/libpy2ag_slp.so.*
+@plugindir@/libpy2ag_slp.so
+@plugindir@/libpy2ag_slp.la
+@clientdir@/slp.ycp
+@moduledir@/SLP.y*
+%doc @docdir@

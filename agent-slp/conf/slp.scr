@@ -1,0 +1,26 @@
+/**
+ * File:	slp.scr
+ * Summary:	Slp agent
+ * Author:	Anas Nashif <nashif@suse.de>
+ * Access:	read / write / execute OR read-only OR execute-only
+ * See:		anyagent libscr	MANPAGE(1) file/relative/to/doc_home/file.html
+ *
+ * Example:
+ *   Dir(.slp)
+ *   (["WHAT", "EVER", "YOU", "GET"])
+ **
+ *   Read(.slp)
+ *   ("WHAT_EVER_YOU_GET")
+ **
+ *   Write(.slp, value)
+ *   (true)
+ *
+ * $Id$
+ *
+ * SOME USEFUL INFORMATION ON THE AGENT
+ */
+.slp
+
+`ag_slp(
+    `SlpAgent()
+)

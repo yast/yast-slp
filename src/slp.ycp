@@ -1,0 +1,139 @@
+{
+    import "SLP";
+    textdomain "slp";
+    import "Wizard";
+
+    define term createTableItem(map srv) ``{
+
+        term tabitem = `item();
+
+        string srvurl = srv["srvurl"]:"";
+
+        tabitem = `item(
+                `id( srvurl),
+                srv["pcSrvType"]:"",
+                srv["srvurl"]:"",
+                srv["lifetime"]:0
+                );
+        return tabitem;
+    }
+    define term createTreeItem(string srvType, list Sub) ``{
+
+        term treeitem = `item();
+
+        Sub = filter(string s, Sub, ``(s!=""));
+        list subitems = maplist(string s, Sub, ``{
+                term si = `item();
+                string Id = "service:" + srvType + ":" + s;
+                si = `item(`id(Id), s);
+                return si;
+                });
+        if (size(subitems) > 0 ) 
+        {
+        treeitem = `item(
+                `id( "service:" + srvType),
+                srvType, subitems
+                );
+        } else {
+        treeitem = `item(
+                `id( "service:" + srvType),
+                srvType
+                );
+        }
+        return treeitem;
+    }
+
+    define list fillTable(list<map> response) ``{
+        list items = maplist(map srv, response, ``{
+                return(createTableItem(srv));
+                });
+
+        return items;
+    }
+
+    define map<string, list> processTree(list<string> typeResponse ) ``{
+        map<string, list> treeData = $[];
+        foreach(string t, typeResponse, ``{
+                list tok = splitstring(t, ":");
+                list s = [];
+                s=add(s, tok[2]:"" );
+                string t1 = tok[1]:"";
+                if (!haskey(treeData, t1) )
+                {
+                    treeData[t1] = s ;
+                }
+                else
+                {
+                    list old = treeData[t1]:[];
+                    treeData[t1] = union(s,old) ;
+                }
+                });
+        return treeData;
+    }
+
+
+    define list fillTree(list<string> typeResponse) ``{
+        map<string, list> data = processTree(typeResponse);
+        list items = maplist(string type, list sub,  data, ``{
+                return(createTreeItem(type, sub));
+                });
+
+        return items;
+    }
+
+
+    /*
+    list<map> response = SLP::FindSrvs("CIM-Object-Manager");
+    */
+    list tableItems = [];
+    list treeItems = [];
+
+    term contents =
+        `Top(
+                `VBox(
+                    `Table( `id( `table ), `opt( `keepSorting ),
+                        `header( _("Type"), _("URL"), _("Lifetime") ),
+                        tableItems ),
+                    `RichText(`id(`attr),  "" )
+                    )
+            );
+
+    string title = _("SLP Browser");
+    Wizard::CreateDialog();
+
+    Wizard::SetContents(title, contents, "", false, true);
+    list<string> typeResponse = SLP::FindSrvTypes("*");
+    treeItems = fillTree(typeResponse);
+    UI::ReplaceWidget(`id(`helpSpace) ,
+            `VBox(
+                `Tree(
+                    `id(`tree),
+                    `opt(`notify,`vstretch),
+                    _("Service Types"),
+                    treeItems
+                    ),
+                `VSpacing(1))
+            );
+
+
+    any input = nil;
+    repeat {
+
+        input = Wizard::UserInput();
+        if (input == `tree) 
+        {
+            string service = (string) UI::QueryWidget(`id(`tree), `CurrentItem);
+            list<map> srvsResponse = SLP::FindSrvs(service);
+            tableItems = fillTable(srvsResponse);
+            UI::ChangeWidget(`id(`table), `Items, tableItems);
+
+            list<string> attr = SLP::FindAttrs(service);
+            string sum = SLP::AttrSummary(attr);
+            UI::ChangeWidget(`id(`attr), `Value, sum);
+        }
+
+    } until (input == `next || input == `abort || input == `back );
+
+    UI::CloseDialog();
+    return input;
+}
