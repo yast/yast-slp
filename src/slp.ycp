@@ -102,7 +102,9 @@
     Wizard::CreateDialog();
 
     Wizard::SetContents(title, contents, "", false, true);
-    list<string> typeResponse = SLP::FindSrvTypes("*");
+
+    list<string> typeResponse = SLP::FindSrvTypes("*", "");
+
     treeItems = fillTree(typeResponse);
     UI::ReplaceWidget(`id(`helpSpace) ,
             `VBox(
@@ -123,12 +125,12 @@
         if (input == `tree) 
         {
             string service = (string) UI::QueryWidget(`id(`tree), `CurrentItem);
-            list<map> srvsResponse = SLP::FindSrvs(service);
+            list<map> srvsResponse = SLP::FindSrvs(service , "");
             tableItems = fillTable(srvsResponse);
-            UI::ChangeWidget(`id(`table), `Items, tableItems);
 
             list<string> attr = SLP::FindAttrs(service);
             string sum = SLP::AttrSummary(attr);
+            UI::ChangeWidget(`id(`table), `Items, tableItems);
             UI::ChangeWidget(`id(`attr), `Value, sum);
         }
 

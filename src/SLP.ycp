@@ -5,20 +5,41 @@
     import "Summary";
     import "HTML";
 
-    global define list<map> FindSrvs( string pcServiceType) ``{
-        list<map> Srvs = (list<map>) SCR::Execute(.slp.findsrvs,
-                $["pcServiceType":pcServiceType] );
+    /**
+      * Issue the query for services
+      * @param string The Service Type String, including authority string if
+      * any, for the request, such as can be discovered using  SLPSrvTypes(). 
+      * This could be, for example "service:printer:lpr" or "service:nfs".
+      * @param string comma separated  list of scope names to search for
+      * service types.
+      * @return list<map> List of Services
+      */
+    global define list<map> FindSrvs( string pcServiceType, string pcScopeList) ``{
+        list<map> Srvs = (list<map>) SCR::Read(.slp.findsrvs,
+                $["pcServiceType":pcServiceType, "pcScopeList": pcScopeList] );
         return Srvs;
     }
 
-    global define list<string> FindSrvTypes ( string pcNamingAuthority ) ``{
-        list<string> Types = (list<string>) SCR::Execute(.slp.findsrvtypes,
-                                $["pcNamingAuthority":pcNamingAuthority] );
+    /**
+      * Issues an SLP service type request for service types in the scopes
+      * indicated by the pcScopeList. If the naming authority is "*", then
+      * results are returned for all naming authorities.  If the naming
+      * authority is the empty string, i.e.  "", then the default naming
+      * authority, "IANA", is used.
+      * @param string The naming authority to search.
+      * @param string comma separated  list of scope names to search for
+      * service types.
+      * @return list<string> Service Types
+      */
+    global define list<string> FindSrvTypes ( string pcNamingAuthority , string pcScopeList) ``{
+        list<string> Types = (list<string>) SCR::Read(.slp.findsrvtypes,
+                                $["pcNamingAuthority":pcNamingAuthority ,
+                                  "pcScopeList": pcScopeList] );
         return Types;
     }
 
     global define list<string> FindAttrs ( string pcURLOrServiceType ) ``{
-        list<string> Attrs = (list<string>) SCR::Execute(.slp.findattrs,
+        list<string> Attrs = (list<string>) SCR::Read(.slp.findattrs,
                                 $["pcURLOrServiceType":pcURLOrServiceType] );
         return Attrs;
     }
@@ -37,4 +58,12 @@
        summary = Summary::CloseList     ( summary );
        return summary;
     }
+
+
+
+    global define boolean Reg(string service) ``{
+
+        boolean ret = SCR::Execute(.slp.reg, service);
+        return ret;
+    });
 }
