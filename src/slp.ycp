@@ -2,6 +2,7 @@
     import "SLP";
     textdomain "slp";
     import "Wizard";
+    import "Label";
 
     define term createTableItem(map srv) ``{
 
@@ -11,8 +12,8 @@
 
         tabitem = `item(
                 `id( srvurl),
-                srv["pcSrvType"]:"",
-                srv["srvurl"]:"",
+                substring(srv["pcSrvType"]:"", 8 ),
+                substring(srv["srvurl"]:"", 8 ),
                 srv["lifetime"]:0
                 );
         return tabitem;
@@ -28,7 +29,7 @@
                 si = `item(`id(Id), s);
                 return si;
                 });
-        if (size(subitems) > 0 ) 
+        if (size(subitems) > 0 )
         {
         treeitem = `item(
                 `id( "service:" + srvType),
@@ -101,7 +102,11 @@
     string title = _("SLP Browser");
     Wizard::CreateDialog();
 
-    Wizard::SetContents(title, contents, "", false, true);
+    Wizard::SetContentsButtons(title, contents, "", Label::BackButton(),
+            Label::FinishButton());
+
+    Wizard::ReplaceAbortButton(`Empty());
+    UI::ChangeWidget(`id(`back), `Enabled, false);
 
     list<string> typeResponse = SLP::FindSrvTypes("*", "");
 
@@ -119,16 +124,36 @@
 
 
     any input = nil;
+    map cache = $[];
+    map attrcache = $[];
     repeat {
 
         input = Wizard::UserInput();
-        if (input == `tree) 
+        if (input == `tree)
         {
             string service = (string) UI::QueryWidget(`id(`tree), `CurrentItem);
-            list<map> srvsResponse = SLP::FindSrvs(service , "");
+            list<map> srvsResponse = [];
+            if(haskey(cache, service))
+            {
+                srvsResponse = cache[service]:[];
+            }
+            else
+            {
+                srvsResponse = SLP::FindSrvs(service , "");
+                cache[service] = srvsResponse;
+            }
             tableItems = fillTable(srvsResponse);
 
-            list<string> attr = SLP::FindAttrs(service);
+            list<string> attr = [];
+            if(haskey(attrcache, service))
+            {
+                attr = attrcache[service]:[];
+            }
+            else
+            {
+                attr = SLP::FindAttrs(service);
+                attrcache[service] = attr;
+            }
             string sum = SLP::AttrSummary(attr);
             UI::ChangeWidget(`id(`table), `Items, tableItems);
             UI::ChangeWidget(`id(`attr), `Value, sum);
