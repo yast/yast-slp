@@ -115,7 +115,7 @@
     Wizard::SetContentsButtons(title, contents, "", Label::BackButton(),
             Label::FinishButton());
 
-    Wizard::ReplaceAbortButton(`Empty());
+    Wizard::HideAbortButton();
     UI::ChangeWidget(`id(`back), `Enabled, false);
 
     list<string> typeResponse = SLP::FindSrvTypes("*", "");
