@@ -14,7 +14,7 @@ liby2ag_slp_la_LDFLAGS = -version-info 2:0
 
 libpy2ag_slp_la_SOURCES =				\
         $(liby2ag_slp_la_SOURCES)			\
-        Y2CCSlpAgent.cc         Y2CCSlpAgent.h
+        Y2CCSlpAgent.cc slp_debug.h
 libpy2ag_slp_la_LDFLAGS = -version-info 2:0
 libpy2ag_slp_la_LIBADD = -lslp
 
