@@ -114,7 +114,7 @@ void get_full_error_data(int error_number,
 	*error_description = UNKNOWN_ERROR_DESCRIPTION;
 } /* End getFullErrorData(int, char *, char *). */
 
-YCPValue check_error_state(int err, char *location_text)
+YCPBoolean check_error_state(int err, char *location_text)
 {
     char		*error_name;
     char		*error_description;
@@ -124,7 +124,7 @@ YCPValue check_error_state(int err, char *location_text)
         get_full_error_data(err, &error_name, &error_description);
         y2error ("%s (%d): %s => %s",
             location_text, err, error_name, error_description);
-        return YCPVoid();
+        return YCPBoolean(false);
     } /* End If. */
 	return YCPBoolean(true);
 }

@@ -1,11 +1,14 @@
 {
 
-    y2milestone("slp: %1", SCR::Execute(.slp.findsrvs,
+    y2milestone("slp: %1", SCR::Read(.slp.findsrvs,
                 $["pcServiceType":"CIM-Object-Manager" ] ));
 
-    y2milestone("slp: %1", SCR::Execute(.slp.findattrs,
+    y2milestone("slp: %1", SCR::Read(.slp.findattrs,
                 $["pcURLOrServiceType":"service:CIM-Object-Manager:https://D116.suse.de:5989/cimom"] ));
     
-    y2milestone("slp: %1", SCR::Execute(.slp.findsrvtypes,
+    y2milestone("slp: %1", SCR::Read(.slp.findsrvtypes,
                 $["pcNamingAuthority":"*"] ));
+
+    y2milestone("reg: %1", SCR::Execute(.slp.reg,
+                "service:TEST:http://192.168.1.1/blah"));
 }

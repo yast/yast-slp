@@ -266,13 +266,91 @@ YCPList SlpAgent::Dir(const YCPPath& path)
     return YCPNull();
 }
 
+
+
+
+void MySLPRegReport(SLPHandle hslp, SLPError errcode, void* cookie)
+{
+    /* return the error code in the cookie */
+    *(SLPError*)cookie = errcode;
+}
+
 /**
  * Read
  */
-YCPValue SlpAgent::Read(const YCPPath &path, const YCPValue& arg, const YCPValue& opt )
+YCPValue SlpAgent::Execute(const YCPPath &path, const YCPValue& value , const YCPValue& opt)
 {
-    y2error("Wrong path '%s' in Read().", path->toString().c_str());
-    return YCPNull();
+
+    SLPError        err;
+    SLPError        callbackerr;
+    SLPHandle       hslp;
+    const char      *reg_string;
+    const char *command = "";
+
+
+    for (int i=0; i<path->length(); i++)
+    {
+        if (path->component_str (i)=="reg")
+        {
+            command = (const char *)path->component_str (i).c_str();
+        }
+        else if (path->component_str (i)=="dereg")
+        {
+            command = (const char *)path->component_str (i).c_str();
+        }
+    }
+
+
+    if  (!strcmp(command,"reg"))
+    {
+        reg_string = value->asString()->value().c_str();
+        err = SLPOpen("en",SLP_FALSE,&hslp);
+        YCPBoolean ret = check_error_state(err, "Error opening slp handle");
+        if (!ret->value())
+            return YCPBoolean(false);
+
+        /* Register a service with SLP */
+        y2milestone("Registering     = %s",reg_string);
+        err = SLPReg( hslp,
+                reg_string,
+                SLP_LIFETIME_MAXIMUM,
+                0,
+                "(public-key=......my_pgp_key.......)",
+                SLP_TRUE,
+                MySLPRegReport,
+                &callbackerr );
+        ret = check_error_state(err, "Error registering service with slp.");
+        if (!ret->value())
+            return YCPBoolean(false);
+        ret = check_error_state(callbackerr, "Error registering service with slp.");
+        if (!ret->value())
+            return YCPBoolean(false);
+    }
+    else if (!strcmp(command,"dereg"))
+    {
+        reg_string = value->asString()->value().c_str();
+        err = SLPOpen("en",SLP_FALSE,&hslp);
+        YCPBoolean ret = check_error_state(err, "Error opening slp handle");
+        if (!ret->value())
+            return YCPBoolean(false);
+
+        /* Register a service with SLP */
+        y2debug("De-Registering     = %s",reg_string);
+        err = SLPDereg( hslp,
+                reg_string,
+                MySLPRegReport,
+                &callbackerr );
+
+        ret = check_error_state(err, "Error Deregistering service with slp.");
+        if (!ret->value())
+            return YCPBoolean(false);
+
+        y2milestone("Deregistered    = %s",reg_string);
+
+    }
+
+    SLPClose(hslp);
+    return YCPBoolean(true);
 }
 
 /**
@@ -288,10 +366,8 @@ YCPBoolean SlpAgent::Write(const YCPPath &path, const YCPValue& value,
 /**
  * Execute
  */
-YCPValue SlpAgent::Execute(const YCPPath &path,
-    const YCPValue& value , const YCPValue& arg)
+YCPValue SlpAgent::Read(const YCPPath &path, const YCPValue& value, const YCPValue& arg )
 {
-
     YCPList newList;
     if (!Result.isEmpty())
         Result = newList;
