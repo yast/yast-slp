@@ -63,7 +63,7 @@
 
     global define boolean Reg(string service) ``{
 
-        boolean ret = SCR::Execute(.slp.reg, service);
+        boolean ret = (boolean)SCR::Execute(.slp.reg, service);
         return ret;
-    });
+    }
 }
