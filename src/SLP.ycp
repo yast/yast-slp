@@ -14,6 +14,9 @@
     import "Summary";
     import "HTML";
 
+
+    string Regd = "/etc/slp.reg.d";
+
     /**
       * Issue the query for services
       * @param string The Service Type String, including authority string if
@@ -98,6 +101,36 @@
     global define boolean DeReg(string service) ``{
 
         boolean ret = (boolean)SCR::Execute(.slp.dereg, service);
+        return ret;
+    }
+
+    /**
+      * Register service with SLP using a reg file
+      * @param string service
+      * @param map attr
+      * @param string regfile
+      * @return boolean
+      */
+    global define boolean RegFile(string service, map attr, string regfile) ``{
+        list slp = [];
+        slp=add(slp, service);
+        foreach(string k, string v , attr ``{
+                slp=add(slp, sformat("%1=%2", tolower(k), v ));
+                });
+
+        string all = mergestring(slp, "\n");
+        boolean ret =(boolean) SCR::Write(.target.string,    sformat("%1/%2", Regd, regfile), all);
+        return ret;
+    }
+
+    /**
+      * De-Register service with SLP by removing the reg file
+      * @param string regfile
+      * @return boolean
+      */
+    global define boolean DeRegFile(string regfile) ``{
+
+        boolean ret = (boolean)SCR::Execute(.target.remove, regfile);
         return ret;
     }
 }
