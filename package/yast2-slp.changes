@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Sun Mar  7 20:48:07 CET 2004 - nashif@suse.de
+
+- New function to match a service type and return all relevant data
+- 2.9.4
+
+-------------------------------------------------------------------
 Fri Mar  5 15:50:51 CET 2004 - nashif@suse.de
 
 - stricter types
