@@ -112,9 +112,9 @@
       * @return boolean
       */
     global define boolean RegFile(string service, map attr, string regfile) ``{
-        list slp = [];
+        list<string> slp = [];
         slp=add(slp, service);
-        foreach(string k, string v , attr ``{
+        foreach(string k, string v , attr, ``{
                 slp=add(slp, sformat("%1=%2", tolower(k), v ));
                 });
 
