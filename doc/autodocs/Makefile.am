@@ -1,11 +1,9 @@
-#
-# Makefile.am for .../agent-slp/doc/autodocs
-#
+# Makefile.am for YCP module .../doc/autodocs
 
-htmldir = $(docdir)/autodocs
+htmldir = @docdir@/autodocs
 
-html_DATA = index.html $(wildcard *.html *.png) doxygen.css @RPMNAME@.tag
-CLEANFILES = $(html_DATA) doxygen.log doxygen.conf installdox
+html_DATA = index.html $(wildcard *.html)
+CLEANFILES = $(html_DATA)
 
-index.html: $(srcdir)/../../src/*.h
-	@ybindir@/ydoxygen PROJECT_NAME=@RPMNAME@
+index.html: $(srcdir)/../../src/*.ycp
+	@ybindir@/ycpdoc -d. $(srcdir)/../../src/*.ycp
