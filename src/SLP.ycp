@@ -62,6 +62,25 @@
         return Attrs;
     }
 
+
+    /**
+      * Find attributes of a service and return a map
+      * @param string service url or type
+      * @return map<string, string> attributes
+      */
+    global define map<string,string> GetAttrMap(string pcURLOrServiceType)
+        ``{
+
+            list<string> Attrs = (list<string>) SCR::Read(.slp.findattrs,
+                    $["pcURLOrServiceType":pcURLOrServiceType] );
+            map<string, string> att = (map<string, string>)listmap(string a, Attrs, ``{
+                    string s = substring(a, 1, size(a) - 2 );
+                    list aa = splitstring(s, "=");
+                    return($[aa[0]:"empty":aa[1]:"empty"]);
+                    });
+            return att;
+        }
+
     /**
       * Attribute summary
       * @param list<string> attribute list
