@@ -28,7 +28,7 @@
                 );
         return tabitem;
     }
-    define term createTreeItem(string srvType, list Sub) ``{
+    define term createTreeItem(string srvType, list<string> Sub) ``{
 
         term treeitem = `item();
 
@@ -62,11 +62,11 @@
         return items;
     }
 
-    define map<string, list> processTree(list<string> typeResponse ) ``{
-        map<string, list> treeData = $[];
+    define map<string, list<string> > processTree(list<string> typeResponse ) ``{
+        map<string, list<string> > treeData = $[];
         foreach(string t, typeResponse, ``{
-                list tok = splitstring(t, ":");
-                list s = [];
+                list<string> tok = splitstring(t, ":");
+                list<string> s = [];
                 s=add(s, tok[2]:"" );
                 string t1 = tok[1]:"";
                 if (!haskey(treeData, t1) )
@@ -76,7 +76,7 @@
                 else
                 {
                     list old = treeData[t1]:[];
-                    treeData[t1] = union(s,old) ;
+                    treeData[t1] = (list<string>)union(s,old) ;
                 }
                 });
         return treeData;
@@ -84,8 +84,8 @@
 
 
     define list fillTree(list<string> typeResponse) ``{
-        map<string, list> data = processTree(typeResponse);
-        list items = maplist(string type, list sub,  data, ``{
+        map<string, list<string> > data = processTree(typeResponse);
+        list items = maplist(string type, list<string> sub,  data, ``{
                 return(createTreeItem(type, sub));
                 });
 

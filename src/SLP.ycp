@@ -130,7 +130,7 @@
       * @param string regfile
       * @return boolean
       */
-    global define boolean RegFile(string service, map attr, string regfile) ``{
+    global define boolean RegFile(string service, map<string,string> attr, string regfile) ``{
         list<string> slp = [];
         slp=add(slp, service);
         foreach(string k, string v , attr, ``{
