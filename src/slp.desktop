@@ -21,3 +21,4 @@ Exec=/sbin/yast2 slp
 
 Name=SLP Browser
 GenericName=SLP Browser
+X-KDE-SubstituteUID=true
