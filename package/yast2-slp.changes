@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Mar 12 14:49:38 CET 2004 - nashif@suse.de
+
+- Adapt to new wizard, use generic wizard now
+- added desktop file
+- 2.9.5
+
+-------------------------------------------------------------------
 Sun Mar  7 20:48:07 CET 2004 - nashif@suse.de
 
 - New function to match a service type and return all relevant data
