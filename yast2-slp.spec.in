@@ -2,6 +2,7 @@
 # neededforbuild gpp libgpp libxcrypt libxcrypt-devel yast2-devel-packages openslp openslp-devel yast2-xml
 
 @HEADER@
+Requires: openslp
 Summary:	-
 
 %description
