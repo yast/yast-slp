@@ -119,6 +119,7 @@
                 });
 
         string all = mergestring(slp, "\n");
+        SCR::Execute(.target.mkdir, Regd );
         boolean ret =(boolean) SCR::Write(.target.string,    sformat("%1/%2", Regd, regfile), all);
         return ret;
     }
