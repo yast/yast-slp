@@ -29,6 +29,7 @@
     global define list<map> FindSrvs( string pcServiceType, string pcScopeList) ``{
         list<map> Srvs = (list<map>) SCR::Read(.slp.findsrvs,
                 $["pcServiceType":pcServiceType, "pcScopeList": pcScopeList] );
+        y2debug("FindSrvs: %1",  Srvs);
         return Srvs;
     }
 
@@ -49,6 +50,7 @@
                                   "pcScopeList": pcScopeList] );
         return Types;
     }
+
 
 
     /**
@@ -152,5 +154,24 @@
 
         boolean ret = (boolean)SCR::Execute(.target.remove, regfile);
         return ret;
+    }
+    /**
+     * Match Srv Type and return all data
+     * @param string match string
+     * @return list<map> list of services matching with all relevant data
+     */
+    global define list<map> MatchType (string match ) {
+        list<string> t = FindSrvTypes("*", "");
+        list<map> ret = [];
+        foreach(string type , t, {
+                if (regexpmatch(type, match)) {
+                    list<map> matched = FindSrvs(type, "");
+                    ret = (list<map>) union(ret , maplist(map m, matched, ``{
+                            m["attr"] = GetAttrMap(m["srvurl"]:"");
+                            return(m);
+                            }));
+                }
+                });
+       return ret;
     }
 }
