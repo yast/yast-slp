@@ -16,7 +16,7 @@ X-SuSE-YaST-Geometry=
 X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstResource=
 
-Icon=slp
+Icon=yast-slp
 Exec=/sbin/yast2 slp
 
 Name=SLP Browser
