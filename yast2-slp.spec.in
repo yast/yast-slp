@@ -1,7 +1,7 @@
 @HEADER-COMMENT@
-# neededforbuild gpp libgpp yast2-devel-packages openslp openslp-devel 
 
 @HEADER@
+BuildRequires:	gcc-c++ yast2-devel-packages
 Requires: openslp
 Summary:	-
 
