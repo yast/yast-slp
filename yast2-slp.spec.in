@@ -1,7 +1,7 @@
 @HEADER-COMMENT@
 
 @HEADER@
-BuildRequires:	gcc-c++ yast2-devel-packages
+BuildRequires:	gcc-c++ libxcrypt-devel openslp-devel doxygen perl-XML-Writer yast2-devtools yast2-core-devel yast2 
 Requires: openslp
 Summary:	-
 
