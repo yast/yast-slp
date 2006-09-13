@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 13 10:02:32 CEST 2006 - jsuchome@suse.cz
+
+- added support for unicast queries and peerinfo (F300619)
+- 2.13.2  
+
+-------------------------------------------------------------------
 Mon Feb 20 09:07:23 CET 2006 - jsuchome@suse.cz
 
 - reduced BuildRequires 

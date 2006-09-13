@@ -70,6 +70,42 @@
         return Attrs;
     }
 
+    /**
+      * Find attributes of a service using a unicast query
+      * @param pcURLOrServiceType service url or type
+      * @param ip IP address of the server
+      * @return list<string> attributes
+      */
+    global define list<string> UnicastFindAttrs (
+	string pcURLOrServiceType, string ip)
+    {
+	if (ip == "") return FindAttrs (pcURLOrServiceType);
+
+        list<string> Attrs = (list<string>) SCR::Read(.slp.unicastfindattrs,
+            $[
+		"pcURLOrServiceType"	: pcURLOrServiceType,
+		"ip-address"		: ip
+	    ]
+	);
+        return Attrs;
+    }
+
+    /**
+      * Find attributes (using unicast query) of a service and return a map
+      * @param pcURLOrServiceType service url or type
+      * @param ip IP address of the server
+      * @return map<string,string> attributes
+      */
+    global define map<string,string> GetUnicastAttrMap (
+	string pcURLOrServiceType, string ip)
+    {
+        list<string> Attrs = UnicastFindAttrs (pcURLOrServiceType, ip);
+        return (map<string, string>) listmap(string a, Attrs, {
+            string s = substring(a, 1, size(a) - 2 );
+            list aa = splitstring(s, "=");
+            return $[	aa[0]:"empty" : aa[1]:"empty"	];
+        });
+    }
 
     /**
       * Find attributes of a service and return a map
@@ -79,8 +115,7 @@
     global define map<string,string> GetAttrMap(string pcURLOrServiceType)
     {
 
-            list<string> Attrs = (list<string>) SCR::Read(.slp.findattrs,
-                    $["pcURLOrServiceType":pcURLOrServiceType] );
+            list<string> Attrs = FindAttrs (pcURLOrServiceType);
             map<string, string> att = (map<string, string>)listmap(string a, Attrs, ``{
                     string s = substring(a, 1, size(a) - 2 );
                     list aa = splitstring(s, "=");

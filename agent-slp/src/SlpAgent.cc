@@ -8,6 +8,8 @@
  */
 
 #include <slp.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include "SlpAgent.h"
 #include "slp_debug.h"
 
@@ -161,6 +163,12 @@ MySLPSrvURLCallback (SLPHandle hslp,
             entry->add(YCPString("pcFamily"), YCPString((const char *)(strlen(parsedurl->s_pcNetFamily)==0)?"IP":"Other"));
             entry->add(YCPString("pcSrvPart"), YCPString(parsedurl->s_pcSrvPart));
             entry->add(YCPString("lifetime"), YCPInteger(lifetime));
+	    struct sockaddr_in peerinfo;
+	    if (SLPGetPeer(hslp, srvurl, &peerinfo) == SLP_OK)
+	    {
+		entry->add (YCPString ("ip"),
+			    YCPString (inet_ntoa(peerinfo.sin_addr)));
+	    }
             Result->add(entry);
             *(SLPError *) cookie = SLP_OK;
             break;
@@ -232,6 +240,32 @@ YCPValue SlpAgentFindAttrs(const char *pcURLOrServiceType, const char *pcScopeLi
     return YCPBoolean(true);
 }
 
+/**
+ * Perform an unicast query for attributes
+ * Comparing to SlpAgentFindAttrs, additional parameter with IP adress needs
+ * to be provided.
+ */
+YCPValue SlpAgentUnicastFindAttrs(const char *pcURLOrServiceType, const char *pcScopeList, const char *pcAttrIds, const char *ip)
+{
+    SLPError    err;
+    SLPHandle   hslp;
+
+    err = SLPOpen("en",SLP_FALSE,&hslp);
+    check_error_state(err,"Error opening slp handle.");
+
+    err	= SLPAssociateIP (hslp, ip);
+    check_error_state(err,"Error associating IP to slp handle.");
+	
+    err = SLPFindAttrs(hslp,
+                       pcURLOrServiceType,
+                       pcScopeList,
+                       pcAttrIds,
+                       MyAttrCallback,
+                     0);
+    check_error_state(err, "Error registering service with slp.");
+    SLPClose(hslp);
+    return YCPBoolean(true);
+}
 
 YCPValue SlpAgentFindSrvs( const char *pcServiceType)
 {
@@ -445,10 +479,14 @@ YCPValue SlpAgent::Read(const YCPPath &path, const YCPValue& value, const YCPVal
     {
         command = (const char *)path->component_str (i).c_str();
     }
+    else if (path->component_str (i)=="unicastfindattrs")
+    {
+        command = (const char *)path->component_str (i).c_str();
+    }
     }
     YCPMap OptionsMap   = value->asMap();
 
-    const char *pcSearchFilter  = getMapValue ( OptionsMap,"pcSearchFilter");
+//    const char *pcSearchFilter  = getMapValue ( OptionsMap,"pcSearchFilter");
     const char *pcServiceType  = getMapValue ( OptionsMap,"pcServiceType");
     const char *pcURLOrServiceType  = getMapValue ( OptionsMap,"pcURLOrServiceType");
     const char *pcScopeList  = getMapValue ( OptionsMap,"pcScopeList");
@@ -460,6 +498,13 @@ YCPValue SlpAgent::Read(const YCPPath &path, const YCPValue& value, const YCPVal
     {
          YCPValue ret = SlpAgentFindAttrs(pcURLOrServiceType, pcScopeList, pcAttrIds );
          y2debug ("pcURLOrServiceType: %s", pcURLOrServiceType);
+    }
+    else if (!strcmp(command,"unicastfindattrs"))
+    {
+	const char *ip  = getMapValue (OptionsMap, "ip-address");
+        y2debug ("pcURLOrServiceType: %s, ip: %s", pcURLOrServiceType, ip);
+	YCPValue ret = SlpAgentUnicastFindAttrs (
+		pcURLOrServiceType, pcScopeList, pcAttrIds, ip);
     }
     else if (!strcmp(command,"findsrvs"))
     {
