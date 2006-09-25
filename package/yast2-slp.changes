@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 22 14:47:39 CEST 2006 - jsuchome@suse.cz
+
+- use dlsym to check if SLPGetPeer is available (F300619, cont.)
+- 2.13.3
+
+-------------------------------------------------------------------
 Wed Sep 13 10:02:32 CEST 2006 - jsuchome@suse.cz
 
 - added support for unicast queries and peerinfo (F300619)
