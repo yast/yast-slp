@@ -10,6 +10,7 @@
 #include <slp.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <dlfcn.h>
 #include "SlpAgent.h"
 #include "slp_debug.h"
 
@@ -140,7 +141,22 @@ splitstring (const YCPString &s, const YCPString &c)
     return ret;
 }
 
+// wrapper for SLPGetPeer from openslp
+SLPError CallSLPGetPeer(SLPHandle hSLP, const char *pcURL, struct sockaddr_in *peerinfo) {
+    
+    static int called_dlsym;
+    static SLPError (*slpgetpeer) (SLPHandle hSLP, const char *pcURL, struct sockaddr_in *peerinfo);
+    
+    if (!called_dlsym) {
+	slpgetpeer = (SLPError (*)(void*, const char*, sockaddr_in*))
+	    dlsym(RTLD_DEFAULT, "SLPGetPeer");
+	called_dlsym = 1;
+    }
+    if (!slpgetpeer)
+	return SLP_NOT_IMPLEMENTED;
 
+    return (*slpgetpeer)(hSLP, pcURL, peerinfo);
+}
 
 
 SLPBoolean
@@ -164,7 +180,7 @@ MySLPSrvURLCallback (SLPHandle hslp,
             entry->add(YCPString("pcSrvPart"), YCPString(parsedurl->s_pcSrvPart));
             entry->add(YCPString("lifetime"), YCPInteger(lifetime));
 	    struct sockaddr_in peerinfo;
-	    if (SLPGetPeer(hslp, srvurl, &peerinfo) == SLP_OK)
+	    if (CallSLPGetPeer(hslp, srvurl, &peerinfo) == SLP_OK)
 	    {
 		entry->add (YCPString ("ip"),
 			    YCPString (inet_ntoa(peerinfo.sin_addr)));
