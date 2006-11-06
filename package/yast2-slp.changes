@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov  6 11:45:25 CET 2006 - jsuchome@suse.cz
+
+- new version for new package
+- 2.14.0 
+
+-------------------------------------------------------------------
 Fri Sep 22 14:47:39 CEST 2006 - jsuchome@suse.cz
 
 - use dlsym to check if SLPGetPeer is available (F300619, cont.)
