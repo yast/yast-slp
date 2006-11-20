@@ -8,8 +8,6 @@
  */
 
 #include <slp.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <dlfcn.h>
 #include "SlpAgent.h"
 #include "slp_debug.h"
@@ -142,22 +140,21 @@ splitstring (const YCPString &s, const YCPString &c)
 }
 
 // wrapper for SLPGetPeer from openslp
-SLPError CallSLPGetPeer(SLPHandle hSLP, const char *pcURL, struct sockaddr_in *peerinfo) {
+char* CallSLPGetPeer(SLPHandle hSLP, const char *pcURL) {
     
     static int called_dlsym;
-    static SLPError (*slpgetpeer) (SLPHandle hSLP, const char *pcURL, struct sockaddr_in *peerinfo);
+    static char* (*slpgetpeer) (SLPHandle hSLP, const char *pcURL);
     
     if (!called_dlsym) {
-	slpgetpeer = (SLPError (*)(void*, const char*, sockaddr_in*))
+	slpgetpeer = (char* (*)(void*, const char*))
 	    dlsym(RTLD_DEFAULT, "SLPGetPeer");
 	called_dlsym = 1;
     }
     if (!slpgetpeer)
-	return SLP_NOT_IMPLEMENTED;
+	return NULL;
 
-    return (*slpgetpeer)(hSLP, pcURL, peerinfo);
+    return (*slpgetpeer)(hSLP, pcURL);
 }
-
 
 SLPBoolean
 MySLPSrvURLCallback (SLPHandle hslp,
@@ -167,6 +164,7 @@ MySLPSrvURLCallback (SLPHandle hslp,
     YCPMap entry;
     SLPError        err;
     SLPSrvURL       *parsedurl;
+    char *peer;
     switch(errcode) {
         case SLP_OK:
             err = SLPParseSrvURL(srvurl, &parsedurl);
@@ -179,11 +177,11 @@ MySLPSrvURLCallback (SLPHandle hslp,
             entry->add(YCPString("pcFamily"), YCPString((const char *)(strlen(parsedurl->s_pcNetFamily)==0)?"IP":"Other"));
             entry->add(YCPString("pcSrvPart"), YCPString(parsedurl->s_pcSrvPart));
             entry->add(YCPString("lifetime"), YCPInteger(lifetime));
-	    struct sockaddr_in peerinfo;
-	    if (CallSLPGetPeer(hslp, srvurl, &peerinfo) == SLP_OK)
+	    peer	= CallSLPGetPeer (hslp, srvurl);
+	    if (peer)
 	    {
-		entry->add (YCPString ("ip"),
-			    YCPString (inet_ntoa(peerinfo.sin_addr)));
+		entry->add (YCPString ("ip"), YCPString (peer));
+		SLPFree(peer);
 	    }
             Result->add(entry);
             *(SLPError *) cookie = SLP_OK;
