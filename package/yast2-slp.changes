@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 10 14:15:06 CEST 2007 - jsuchome@suse.cz
+
+- new version for new product
+- 2.15.0 
+
+-------------------------------------------------------------------
 Mon Nov 20 13:02:45 CET 2006 - jsuchome@suse.cz
 
 - adapted to new API of SLPGetPeer (#222611)
