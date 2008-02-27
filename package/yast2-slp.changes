@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 27 09:42:04 CET 2008 - lslezak@suse.cz
+
+- configure.in.in - added check for slp.h (report missing
+  openslp-devel package when compiling from SVN)
+
+-------------------------------------------------------------------
 Fri Aug 10 14:15:06 CEST 2007 - jsuchome@suse.cz
 
 - new version for new product

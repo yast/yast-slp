@@ -10,5 +10,12 @@
 @YAST2-CHECKS-PROGRAM@
 @YAST2-CHECKS-YCP@
 
+# check slp.h
+yast_found_slp=no
+AC_CHECK_HEADER([slp.h],[yast_found_slp=yes])
+if test "$yast_found_slp" = "no"; then
+    AC_MSG_ERROR([Header file slp.h is missing. Please install openslp-devel.])
+fi
+
 ## and generate the output
 @YAST2-OUTPUT@
