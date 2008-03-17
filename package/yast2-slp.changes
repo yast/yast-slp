@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Mar 17 12:43:32 CET 2008 - jsrain@suse.cz
+
+- added 'StartupNotify=true' to the desktop file (bnc #304964)
+
+-------------------------------------------------------------------
 Wed Feb 27 09:42:04 CET 2008 - lslezak@suse.cz
 
 - configure.in.in - added check for slp.h (report missing
