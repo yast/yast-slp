@@ -4,7 +4,7 @@
 BuildRequires:	gcc-c++ libxcrypt-devel openslp-devel doxygen perl-XML-Writer yast2-devtools yast2-core-devel yast2 
 Requires: openslp
 
-Summary:	SCR agent for SLP services
+Summary:	YaST2 - SLP Agent and Browser
 
 %description
 -
