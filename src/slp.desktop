@@ -17,9 +17,8 @@ X-SuSE-YaST-SortKey=
 X-SuSE-YaST-AutoInstResource=
 
 Icon=yast-slp
-Exec=/sbin/yast2 slp
+Exec=xdg-su -c "/sbin/yast2 slp"
 
 Name=SLP Browser
 GenericName=SLP Browser
-X-KDE-SubstituteUID=true
 StartupNotify=true
