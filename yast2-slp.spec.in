@@ -9,7 +9,7 @@ Requires: openslp
 Summary:	YaST2 - SLP Agent and Browser
 
 %description
-This modules enables YaST modules to register services with SLP.
+This module enables YaST modules to register services with SLP.
 Additionally, it offers a simple browser of SLP registered services.
 
 @PREP@

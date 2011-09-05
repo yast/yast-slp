@@ -4,6 +4,11 @@ Fri Aug  5 12:35:08 CEST 2011 - tgoettlicher@suse.de
 - fixed .desktop file (bnc #681249)
 
 -------------------------------------------------------------------
+Sun Jul 24 14:15:23 UTC 2011 - andrea.turrini@gmail.com
+
+- Fixed typo in description of yast2-slp.spec
+
+-------------------------------------------------------------------
 Wed Jan 13 18:56:03 CET 2010 - kmachalkova@suse.cz
 
 - Adjusted .desktop file(s) to wrap /sbin/yast2/ calls in xdg-su
