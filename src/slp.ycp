@@ -106,7 +106,7 @@
 
     string title = _("SLP Browser");
     Wizard::CreateTreeDialog();
-    Wizard::SetDesktopIcon("slp");
+    Wizard::SetDesktopTitleAndIcon("slp");
     list<map> Tree = fillTree(typeResponse);
     y2debug("Tree=%1", Tree);
     Wizard::CreateTree(Tree, _("Service Types") );
