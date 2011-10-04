@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct  4 09:52:44 UTC 2011 - cfarrell@suse.com
+
+- license update: GPL-2.0+
+  SPDX format
+
+-------------------------------------------------------------------
 Tue Sep 27 14:49:35 CEST 2011 - visnov@suse.cz
 
 - set dialog title
