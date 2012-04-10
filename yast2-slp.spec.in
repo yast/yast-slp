@@ -4,6 +4,9 @@
 Group:	System/YaST
 License: GPL-2.0+
 BuildRequires:	gcc-c++ openslp-devel doxygen perl-XML-Writer yast2-devtools yast2-core-devel yast2 libtool
+%if 0%{?suse_version} < 1220
+BuildRequires:  libxcrypt-devel
+%endif
 Requires: openslp
 # Wizard::SetDesktopTitleAndIcon
 Requires: yast2 >= 2.21.22

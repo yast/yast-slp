@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 10 15:54:34 CEST 2012 - tgoettlicher@suse.de
+
+- BuildRequire libxcrypt-devel only for < 12.2 
+
+-------------------------------------------------------------------
 Fri Nov 25 12:25:11 UTC 2011 - coolo@suse.com
 
 - add libtool as buildrequire to avoid implicit dependency
