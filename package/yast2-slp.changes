@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 14 16:23:29 CET 2013 - jsuchome@suse.cz
+
+- check the return value of error handling function
+- 2.23.0 
+
+-------------------------------------------------------------------
 Tue Apr 10 15:59:00 CEST 2012 - jsuchome@suse.cz
 
 - 2.22.0 

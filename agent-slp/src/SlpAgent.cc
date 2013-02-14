@@ -168,7 +168,11 @@ MySLPSrvURLCallback (SLPHandle hslp,
     switch(errcode) {
         case SLP_OK:
             err = SLPParseSrvURL(srvurl, &parsedurl);
-            check_error_state(err, "Error parsing SrvURL");
+
+            if (!check_error_state(err, "Error parsing SrvURL")->value())
+            {
+              break;
+            }
 
             entry->add(YCPString("srvurl"), YCPString(srvurl) );
             entry->add(YCPString("pcSrvType"), YCPString(parsedurl->s_pcSrvType) );
