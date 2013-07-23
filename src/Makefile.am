@@ -2,10 +2,6 @@
 # Makefile.am for xml/module/src
 #
 
-#
-#desktop_DATA =   \
-#    slp.desktop
-
 module_DATA =	\
     SLP.ycp
 
