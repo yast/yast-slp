@@ -11,6 +11,8 @@ Requires: openslp
 # Wizard::SetDesktopTitleAndIcon
 Requires: yast2 >= 2.21.22
 
+Requires:       yast2-ruby-bindings >= 1.0.0
+
 Summary:	YaST2 - SLP Agent and Browser
 
 %description
@@ -31,6 +33,6 @@ Additionally, it offers a simple browser of SLP registered services.
 @plugindir@/libpy2ag_slp.so.*
 @plugindir@/libpy2ag_slp.so
 @plugindir@/libpy2ag_slp.la
-@clientdir@/slp.ycp
-@moduledir@/SLP.y*
+@clientdir@/slp.rb
+@moduledir@/SLP.rb
 %doc @docdir@
