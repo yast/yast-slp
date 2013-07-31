@@ -1,13 +1,11 @@
-#
-# Makefile.am for xml/module/src
-#
+# Sources for slp
 
-module_DATA =	\
-    SLP.ycp
+module_DATA = \
+  modules/SLP.rb
 
 client_DATA = \
-    slp.ycp
+  clients/slp.rb
 
-EXTRA_DIST = $(module_DATA) $(client_DATA) #$(desktop_DATA)
+EXTRA_DIST = $(module_DATA) $(client_DATA)
 
 include $(top_srcdir)/Makefile.am.common
