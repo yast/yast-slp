@@ -1,11 +1,22 @@
-# Sources for slp
+#
+# Makefile.am for .../agent-slp/src
+#
 
-module_DATA = \
-  modules/SLP.rb
+AM_CXXFLAGS = -DY2LOG=\"agent-slp\" -Wall
 
-client_DATA = \
-  clients/slp.rb
+plugin_LTLIBRARIES = libpy2ag_slp.la
+noinst_LTLIBRARIES = liby2ag_slp.la
 
-EXTRA_DIST = $(module_DATA) $(client_DATA)
+liby2ag_slp_la_SOURCES =				\
+	SlpAgent.cc					\
+	SlpAgent.h
+liby2ag_slp_la_LDFLAGS = -version-info 2:0
+liby2ag_slp_la_LIBADD = @AGENT_LIBADD@
 
-include $(top_srcdir)/Makefile.am.common
+libpy2ag_slp_la_SOURCES =				\
+        $(liby2ag_slp_la_SOURCES)			\
+        Y2CCSlpAgent.cc slp_debug.h
+libpy2ag_slp_la_LDFLAGS = -version-info 2:0
+libpy2ag_slp_la_LIBADD = @AGENT_LIBADD@ -lslp
+
+INCLUDES = -I$(includedir)
