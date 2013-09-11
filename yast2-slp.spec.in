@@ -7,10 +7,7 @@ BuildRequires:	gcc-c++ openslp-devel doxygen perl-XML-Writer yast2-devtools yast
 %if 0%{?suse_version} < 1220
 BuildRequires:  libxcrypt-devel
 %endif
-Requires: openslp
-# Wizard::SetDesktopTitleAndIcon
-Requires: yast2 >= 2.21.22
-
+Requires:       openslp yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 
 Summary:	YaST2 - SLP Agent and Browser
