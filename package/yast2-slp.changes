@@ -1,10 +1,4 @@
 -------------------------------------------------------------------
-Wed Sep  4 13:04:15 CEST 2013 - jsuchome@suse.cz
-
-- drop YCP UI parts (fate#316195)
-- 3.0.1
-
--------------------------------------------------------------------
 Wed Jul 31 08:39:31 UTC 2013 - yast-devel@opensuse.org
 
 - converted from YCP to Ruby by YCP Killer
