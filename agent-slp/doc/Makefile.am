@@ -6,5 +6,5 @@ SUBDIRS = autodocs
 
 htmldir = $(docdir)
 
-html_DATA = slp.html TODO.txt
+html_DATA = slp.html
 EXTRA_DIST = $(html_DATA)
