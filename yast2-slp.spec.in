@@ -33,6 +33,5 @@ Additionally, it offers a simple browser of SLP registered services.
 @plugindir@/libpy2ag_slp.so.*
 @plugindir@/libpy2ag_slp.so
 @plugindir@/libpy2ag_slp.la
-@clientdir@/slp.rb
 @moduledir@/SLP.rb
 %doc @docdir@

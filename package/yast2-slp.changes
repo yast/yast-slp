@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 11 16:52:57 CEST 2013 - jsuchome@suse.cz
+
+- revert part of previous change: drop only UI parts, not Ruby API
+- 3.0.2 
+
+-------------------------------------------------------------------
 Wed Sep  4 13:04:15 CEST 2013 - jsuchome@suse.cz
 
 - drop YCP UI parts (fate#316195)

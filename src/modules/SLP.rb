@@ -12,11 +12,6 @@ require "yast"
 module Yast
   class SLPClass < Module
     def main
-      textdomain "slp"
-      Yast.import "Summary"
-      Yast.import "HTML"
-
-
       @Regd = "/etc/slp.reg.d"
     end
 
@@ -130,31 +125,6 @@ module Yast
       deep_copy(att)
     end
 
-    # Attribute summary
-    # @param [Array<String>] Attrs attribute list
-    # @return [String] summary
-    def AttrSummary(_Attrs)
-      _Attrs = deep_copy(_Attrs)
-      summary = ""
-      summary = Summary.AddHeader(summary, _("Attributes"))
-      summary = Summary.OpenList(summary)
-      Builtins.foreach(_Attrs) do |a|
-        s = Builtins.substring(a, 1, Ops.subtract(Builtins.size(a), 2))
-        aa = Builtins.splitstring(s, "=")
-        summary = Summary.AddListItem(
-          summary,
-          Builtins.sformat(
-            "%1: %2",
-            HTML.Bold(Ops.get_string(aa, 0, "")),
-            Ops.get_string(aa, 1, "")
-          )
-        )
-      end
-
-      summary = Summary.CloseList(summary)
-      summary
-    end
-
     # Register service with SLP
     # @param [String] service Service to be registered
     # @return [Boolean] True on success
@@ -232,7 +202,6 @@ module Yast
     publish :function => :UnicastFindAttrs, :type => "list <string> (string, string)"
     publish :function => :GetUnicastAttrMap, :type => "map <string, string> (string, string)"
     publish :function => :GetAttrMap, :type => "map <string, string> (string)"
-    publish :function => :AttrSummary, :type => "string (list <string>)"
     publish :function => :Reg, :type => "boolean (string)"
     publish :function => :DeReg, :type => "boolean (string)"
     publish :function => :RegFile, :type => "boolean (string, map <string, string>, string)"
