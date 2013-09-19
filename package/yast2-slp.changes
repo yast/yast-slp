@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 19 17:03:51 UTC 2013 - lslezak@suse.cz
+
+- do not use *.spec.in template, use *.spec file with RPM macros
+  instead
+- 3.1.0
+
+-------------------------------------------------------------------
 Wed Sep 11 16:52:57 CEST 2013 - jsuchome@suse.cz
 
 - revert part of previous change: drop only UI parts, not Ruby API
