@@ -9,9 +9,9 @@ module Yast
     SCHEME = 'service'
     DELIMITER = ':'
 
-    def find service_name, params={}
+    def find(service_name, params={})
       service = nil
-      service_type = [SCHEME, service_name, params[:protocol]].compact.join(DELIMITER)
+      service_type = create_service_type(service_name, params[:protocol])
       discover_service(service_type, params[:scope]).each do |slp_response|
         service = Service.new(service_name, slp_response, params)
         service = service.match(params)
@@ -20,8 +20,8 @@ module Yast
       service
     end
 
-    def all service_name, params={}
-      service_type = [SCHEME, service_name, params[:protocol]].compact.join(DELIMITER)
+    def all(service_name, params={})
+      service_type = create_service_type(service_name, params[:protocol])
       services = discover_service(service_type, params[:scope]).map do |slp_response|
         Service.new(service_name, slp_response, params).match(params)
       end
@@ -39,11 +39,13 @@ module Yast
       available_services
     end
 
-    alias_method :keys, :types
-
     private
 
-    def parse_slp_type service_type
+    def create_service_type(service_name, protocol)
+      [SCHEME, service_name, protocol].compact.join(DELIMITER)
+    end
+
+    def parse_slp_type(service_type)
       type_parts = service_type.split(DELIMITER)
       case type_parts.size
       when 2
@@ -57,7 +59,7 @@ module Yast
       OpenStruct.new :name => name, :protocol => protocol
     end
 
-    def discover_service service_name, scope=''
+    def discover_service(service_name, scope='')
       SLP.FindSrvs(service_name, scope)
     end
 
@@ -70,7 +72,7 @@ module Yast
       attr_reader :name, :ip, :host, :protocol, :port
       attr_reader :slp_type, :slp_url, :lifetime, :attributes
 
-      def initialize service_name, slp_data, params
+      def initialize(service_name, slp_data, params)
         @name = service_name
         @ip = slp_data['ip']
         @port = slp_data['pcPort']
@@ -82,7 +84,7 @@ module Yast
         @attributes = OpenStruct.new(SLP.GetUnicastAttrMap(slp_url, ip))
       end
 
-      def match params
+      def match(params)
         matches = []
         params.each do |key, value|
           if respond_to?(key)

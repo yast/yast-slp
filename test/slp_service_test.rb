@@ -8,6 +8,14 @@ Yast.import 'SlpService'
 
 describe Yast::SlpService do
   before do
+    @service = double('service',
+                      :name=>'install.suse', :ip=>'10.100.2.16',
+                      :host => 'fallback.suse.cz', :protocol => 'http',
+                      :lifetime => 65535, :port => 0)
+
+    @attributes = double('attributes', :machine=>'x86_64', :description=>'SLE_10_SP4_SDK')
+
+
     Yast::SlpService.stub(:discover_service).and_return(
       [
         {
@@ -16,7 +24,7 @@ describe Yast::SlpService do
           'pcHost'    => '10.100.2.16',
           'pcPort'    => 0,
           'pcSrvPart' => '/install/SLP/SLE-10-SP4-SDK-RC3/x86_64/DVD1',
-          'pcSrvType' => 'service:install.suse.http',
+          'pcSrvType' => 'service:install.suse:http',
           'srvurl'    => 'service:install.suse:http://10.100.2.16/install/SLP/SLE-10-SP4-SDK-RC3/x86_64/DVD1',
           'lifetime'  => 65535
         }
@@ -44,18 +52,18 @@ describe Yast::SlpService do
 
   describe "#find" do
     it "returns the first discovered service that matches the service name and params" do
-      service = Yast::SlpService.find('install.suse', :protocol=>'http', :machine=>'x86_64')
-      expect(service.name).to eq('install.suse')
-      expect(service.ip).to eq('10.100.2.16')
-      expect(service.host).to eq('fallback.suse.cz')
-      expect(service.protocol).to eq('http')
-      expect(service.port).to eq(0)
-      expect(service.lifetime).to eq(65535)
+      service = Yast::SlpService.find('install.suse', :machine=>'x86_64')
+      expect(service.name).to eq(@service.name)
+      expect(service.ip).to eq(@service.ip)
+      expect(service.host).to eq(@service.host)
+      expect(service.protocol).to eq(@service.protocol)
+      expect(service.port).to eq(@service.port)
+      expect(service.lifetime).to eq(@service.lifetime)
       expect(service).to respond_to(:attributes)
       expect(service.attributes).to respond_to(:machine)
-      expect(service.attributes.machine).to eq('x86_64')
+      expect(service.attributes.machine).to eq(@attributes.machine)
       expect(service.attributes).to respond_to(:description)
-      expect(service.attributes.description).to eq('SLE_10_SP4_SDK')
+      expect(service.attributes.description).to eq(@attributes.description)
     end
   end
 
@@ -63,18 +71,24 @@ describe Yast::SlpService do
     it "returns a collection of services" do
       services = Yast::SlpService.all('install.suse')
       expect(services.size).to eq(1)
-      expect(services.first).to be_a(Yast::SlpServiceClass::Service)
+      service = services.first
+      expect(service).to be_a(Yast::SlpServiceClass::Service)
+      expect(service.name).to eq(@service.name)
+      expect(service.ip).to eq(@service.ip)
+      expect(service.host).to eq(@service.host)
+      expect(service.protocol).to eq(@service.protocol)
     end
   end
 
   describe "#types" do
+    @type = double('type', :name => 'install.suse', :protocol => 'http')
+
     it "returns a collection of discovered services" do
       service_types = Yast::SlpService.types
       expect(service_types).to respond_to(:each)
-      type = service_types.find {|t| t.name == 'install.suse' }
+      type = service_types.find {|t| t.name == @type.name }
       expect(type).not_to eq(nil)
-      expect(type.name).to eq('install.suse')
-      expect(type.protocol).to eq('http')
+      expect(type.protocol).to eq(@type.protocol)
     end
   end
 end
