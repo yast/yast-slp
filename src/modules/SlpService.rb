@@ -1,4 +1,3 @@
-require 'yast'
 require 'resolv'
 require 'ostruct'
 
@@ -23,9 +22,10 @@ module Yast
 
     def all service_name, params={}
       service_type = [SCHEME, service_name, params[:protocol]].compact.join(DELIMITER)
-      discover_service(service_type, params[:scope]).map do |slp_response|
+      services = discover_service(service_type, params[:scope]).map do |slp_response|
         Service.new(service_name, slp_response, params).match(params)
-      end.compact
+      end
+      services.compact
     end
 
     def types
