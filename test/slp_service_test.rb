@@ -23,14 +23,14 @@ describe Yast::SlpService do
       ]
     )
 
-    SLP.stub(:GetUnicastAttrMap).and_return(
+    Yast::SLP.stub(:GetUnicastAttrMap).and_return(
       {
         'machine' => 'x86_64',
         'description' => 'SLE_10_SP4_SDK'
       }
     )
 
-    SLP.stub(:FindSrvTypes).and_return(
+    Yast::SLP.stub(:FindSrvTypes).and_return(
       [
         "service:smtp",
         "service:install.suse:http",
@@ -61,9 +61,9 @@ describe Yast::SlpService do
 
   describe "#all" do
     it "returns a collection of services" do
-      services = Yast::SlpService.find('install.suse')
+      services = Yast::SlpService.all('install.suse')
       expect(services.size).to eq(1)
-      expect(services.first).to be_a(Yast::SlpService)
+      expect(services.first).to be_a(Yast::SlpServiceClass::Service)
     end
   end
 
