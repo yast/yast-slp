@@ -1,3 +1,52 @@
+##
+#  Improved API for consuming SLP services in Yast
+#
+#  The main purpose of this module is to have a more developer friendly
+#  API for searching and manipulating SLP services. It hides the complexity of
+#  SLP protocol queries by concentrating the discovery call into a single method
+#  call taking into account the service type along with its attributes.
+#
+#  Examples:
+#
+#    # A simple query for available ldap services:
+#
+#    Yast::SlpService.find('ldap') # return a service object or nil if none found
+#    Yast::SlpService.all('ldap')  # return all discovered services in a collection
+#
+#    # A query for installation server service with scope and protocol parameters:
+#
+#    Yast::SlpService.all('install.suse', :scope=>'scope_name', :protocol=>'ftp')
+#
+#    # A similar query narrowing the results by criteria for service attributes:
+#
+#    Yast::SlpService.all('install.suse', :machine=>'x86_64')
+#
+#    # How to access the obtained service properties:
+#
+#    service = Yast::SlpService.find('ldap', :port=>389, :description=>'main')
+#    service.name     # => 'ldap'
+#    service.ip       # => '10.10.10.10'
+#    service.port     # => 389
+#    service.slp_type # => 'service:ldap'
+#    service.slp_url  # => 'service:ldap://server.me:389'
+#    service.protocol # => 'ldap'
+#    service.host     # => 'server.me'
+#    service.lifetime # => 65535
+#    service.attributes.description # => 'Main LDAP server'
+#
+#    The matching of the attributes is case insensitive.
+#
+#    # How to get a list of available service types:
+#
+#    Yast::SlpService.types.each do |type|
+#      puts type.name
+#      puts type.protocol
+#    end
+#
+#    The rule is: if the service name is equal to protocol name, don't pass the protocol
+#    name as parameter to the search query (this is typical i.e. for ntp, ssh or ldap services).
+##
+
 require 'resolv'
 require 'ostruct'
 

@@ -81,7 +81,9 @@ describe Yast::SlpService do
   end
 
   describe "#types" do
-    @type = double('type', :name => 'install.suse', :protocol => 'http')
+    before do
+      @type = double('type', :name => 'install.suse', :protocol => 'http')
+    end
 
     it "returns a collection of discovered services" do
       service_types = Yast::SlpService.types
