@@ -17,7 +17,7 @@
 
 
 Name:           yast2-slp
-Version:        3.1.1
+Version:        3.1.2
 Release:        0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -56,4 +56,5 @@ Additionally, it offers a simple browser of SLP registered services.
 %{yast_plugindir}/libpy2ag_slp.so
 %{yast_plugindir}/libpy2ag_slp.la
 %{yast_moduledir}/SLP.rb
+%{yast_moduledir}/SlpService.rb
 %doc %{yast_docdir}
