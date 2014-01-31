@@ -62,8 +62,7 @@ module Yast
       service = nil
       service_type = create_service_type(service_name, params[:protocol])
       discover_service(service_type, params[:scope]).each do |slp_response|
-        service = Service.new(service_name, slp_response, params)
-        service = service.match(params)
+        service = Service.new(service_name, slp_response, params).match(params)
         break if service
       end
       service

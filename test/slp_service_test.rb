@@ -1,8 +1,8 @@
 #!/usr/bin/env rspec
 #
-ENV["Y2DIR"] = File.expand_path("../../src", __FILE__)
+ENV['Y2DIR'] = File.expand_path('../../src', __FILE__)
 
-require "yast"
+require 'yast'
 
 Yast.import 'SlpService'
 
@@ -40,18 +40,18 @@ describe Yast::SlpService do
 
     Yast::SLP.stub(:FindSrvTypes).and_return(
       [
-        "service:smtp",
-        "service:install.suse:http",
-        "service:ntp",
-        "service:ldap"
+        'service:smtp',
+        'service:install.suse:http',
+        'service:ntp',
+        'service:ldap'
       ]
     )
 
     ::Resolv.stub(:getname).and_return('fallback.suse.cz')
   end
 
-  describe "#find" do
-    it "returns the first discovered service that matches the service name and params" do
+  describe '#find' do
+    it 'returns the first discovered service that matches the service name and params' do
       service = Yast::SlpService.find('install.suse', :machine=>'x86_64')
       expect(service.name).to eq(@service.name)
       expect(service.ip).to eq(@service.ip)
@@ -67,8 +67,8 @@ describe Yast::SlpService do
     end
   end
 
-  describe "#all" do
-    it "returns a collection of services" do
+  describe '#all' do
+    it 'returns a collection of services' do
       services = Yast::SlpService.all('install.suse')
       expect(services.size).to eq(1)
       service = services.first
@@ -80,12 +80,12 @@ describe Yast::SlpService do
     end
   end
 
-  describe "#types" do
+  describe '#types' do
     before do
       @type = double('type', :name => 'install.suse', :protocol => 'http')
     end
 
-    it "returns a collection of discovered services" do
+    it 'returns a collection of discovered services' do
       service_types = Yast::SlpService.types
       expect(service_types).to respond_to(:each)
       type = service_types.find {|t| t.name == @type.name }
