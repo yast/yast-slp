@@ -27,6 +27,7 @@ Group:	        System/YaST
 License:        GPL-2.0+
 BuildRequires:	gcc-c++ openslp-devel doxygen perl-XML-Writer yast2-core-devel yast2 libtool
 BuildRequires:  yast2-devtools >= 3.1.10
+BuildRequires:  rubygem-rspec
 %if 0%{?suse_version} < 1220
 BuildRequires:  libxcrypt-devel
 %endif
@@ -34,6 +35,7 @@ Requires:       openslp yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 
 Summary:	YaST2 - SLP Agent and Browser
+Url: https://github.com/yast/yast-slp
 
 %description
 This module enables YaST modules to register services with SLP.
