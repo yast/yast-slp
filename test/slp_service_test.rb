@@ -65,6 +65,11 @@ describe Yast::SlpService do
       expect(service.attributes).to respond_to(:description)
       expect(service.attributes.description).to eq(@attributes.description)
     end
+
+    it 'returns nil if no matching service found' do
+      service = Yast::SlpService.find('install.suse', :machine=>'Dell')
+      expect(service).to eq(nil)
+    end
   end
 
   describe '#all' do
@@ -85,7 +90,7 @@ describe Yast::SlpService do
       @type = double('type', :name => 'install.suse', :protocol => 'http')
     end
 
-    it 'returns a collection of discovered services' do
+    it 'returns a collection of discovered service types' do
       service_types = Yast::SlpService.types
       expect(service_types).to respond_to(:each)
       type = service_types.find {|t| t.name == @type.name }
