@@ -1,31 +1,25 @@
-# = Improved API for consuming SLP services in Yast
-# The main purpose of this module is to have a more developer friendly
+# = API for consuming SLP services in Yast
+# The purpose of this module is to have a more developer friendly
 # API for searching and manipulating SLP services. It hides the complexity of
 # SLP protocol queries by concentrating the discovery call into a single method
-# call taking into account the service type along with its attributes.
+# taking into account the service type along with its attributes.
 #
-# == A simple query for available ldap services
-#
-# Example:
+# @example A simple query for available ldap services
 #
 #   Yast::SlpService.find('ldap') # return a service object or nil if none found
 #   Yast::SlpService.all('ldap')  # return all discovered services in a collection
 #
-# == A query for installation server service with scope and protocol parameters
-#
-# Example:
+# @example A query for installation server service with scope and protocol parameters
 #
 #   Yast::SlpService.all('install.suse', :scope=>'some-scope', :protocol=>'ftp')
 #
-# == A similar query narrowing the results by criteria for service attributes
 #
-# Example:
+# @example Another query narrowing the results by criteria for service attributes
 #
 #   Yast::SlpService.all('install.suse', :machine=>'x86_64')
 #
-# == How to access the obtained service properties
 #
-# Example:
+# @example How to access the obtained service properties
 #
 #   service = Yast::SlpService.find('ldap', :port=>389, :description=>'main')
 #   service.name     # => 'ldap'
@@ -40,7 +34,7 @@
 #
 # The matching of the attributes is case insensitive.
 #
-# == How to get a list of available service types:
+# @example How to get a list of available service types
 #
 #   Yast::SlpService.types.each do |type|
 #     puts type.name
