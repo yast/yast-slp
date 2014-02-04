@@ -1,7 +1,8 @@
 # Sources for slp
 
 module_DATA = \
-  modules/SLP.rb
+  modules/SLP.rb \
+  modules/SlpService.rb
 
 EXTRA_DIST = $(module_DATA)
 
