@@ -115,7 +115,8 @@ module Yast
     class Service
 
       def self.create params
-        new(params).verify!
+        service = new(params)
+        return service if service.verified?
       end
 
       attr_reader :name, :ip, :host, :protocol, :port, :params
@@ -135,8 +136,8 @@ module Yast
         @params = params
       end
 
-      def verify!
-        match = params.all? do |key, value|
+      def verified?
+        params.all? do |key, value|
           if respond_to?(key)
             result = send(key).to_s
             result.match(/#{value}/i)
@@ -144,10 +145,9 @@ module Yast
             result = attributes.send(key).to_s
             result.match(/#{value}/i)
           else
-            false
+            true
           end
         end
-        match ? self : nil
       end
     end
 
