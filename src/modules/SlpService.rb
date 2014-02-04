@@ -40,9 +40,6 @@
 #     puts type.name
 #     puts type.protocol
 #   end
-#
-# The rule is: if the service name is equal to protocol name, don't pass the protocol
-# name as parameter to the search query (this is typical i.e. for ntp, ssh or ldap services).
 
 require 'resolv'
 require 'ostruct'
@@ -87,7 +84,13 @@ module Yast
     private
 
     def create_service_type(service_name, protocol)
-      [SCHEME, service_name, protocol].compact.join(DELIMITER)
+      # This check is due to possible duplication in abstract and concrete service types
+      # http://www.ietf.org/rfc/rfc2608.txt, Section 4.1, Service: URLs
+      if service_name == protocol
+        [SCHEME, service_name].join(DELIMITER)
+      else
+        [SCHEME, service_name, protocol].compact.join(DELIMITER)
+      end
     end
 
     def parse_slp_type(service_type)
@@ -129,7 +132,7 @@ module Yast
         @port = slp_data['pcPort']
         @slp_type = slp_data['pcSrvType']
         @slp_url = slp_data['srvurl']
-        @protocol = params.delete(:protocol) || slp_type.split(DELIMITER).last
+        @protocol = slp_type.split(DELIMITER).last
         @host = DnsCache.resolve(ip)
         @lifetime = slp_data['lifetime']
         @attributes = OpenStruct.new(SLP.GetUnicastAttrMap(slp_url, ip))
