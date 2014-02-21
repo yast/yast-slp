@@ -20,7 +20,7 @@ SLPErrorEntry error_entries[] = {
 		 "SLP_OK",
 		 "No DA or SA has service advertisement or attribute information in the language requested, but at least one DA or SA indicated, via the LANGUAGE_NOT_SUPPORTED error code, that it might have information for that service in another language"},
 	//SLP_LANGUAGE_NOT_SUPPORTED,
-	{-1,
+	{(SLPError)-1,
 		 "SLP_LANGUAGE_NOT_SUPPORTED",
 		 "The SLP message was rejected by a remote SLP agent. The API returns this error only when no information was retrieved, and at least one SA or DA indicated a protocol error. The data supplied through the API may be malformed or a may have been damaged in transit."},
 	{SLP_INVALID_REGISTRATION,
