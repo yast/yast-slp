@@ -70,6 +70,27 @@ describe Yast::SlpService do
       service = Yast::SlpService.find('install.suse', :machine=>'Dell')
       expect(service).to eq(nil)
     end
+
+    it "returns discovered service without host name if IP address resolution fails" do
+      ip_address = '100.100.100.100'
+      Yast::SlpService.stub(:discover_service).and_return(
+        [
+          {
+            'ip'        => ip_address,
+            'pcFamily'  => 'IP',
+            'pcHost'    => ip_address,
+            'pcPort'    => 0,
+            'pcSrvType' => 'service:install.suse:http',
+            'srvurl'    => 'service:install.suse:http://10.100.2.16/install/SLP/SLE-10-SP4-SDK-RC3/x86_64/DVD1',
+            'lifetime'  => 65535
+          }
+        ]
+      )
+      ::Resolv.stub(:getname).and_raise(Resolv::ResolvError)
+      service = Yast::SlpService.find('install.suse')
+      expect(service.ip).to eq(ip_address)
+      expect(service.host).to be_nil
+    end
   end
 
   describe '#all' do
