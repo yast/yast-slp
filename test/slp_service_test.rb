@@ -86,7 +86,7 @@ describe Yast::SlpService do
           }
         ]
       )
-      ::Resolv.stub(:getname).and_raise(Resolv::ResolvError)
+      allow(::Resolv).to receive(:getname).and_raise(Resolv::ResolvError)
       service = Yast::SlpService.find('install.suse')
       expect(service.ip).to eq(ip_address)
       expect(service.host).to be_nil
