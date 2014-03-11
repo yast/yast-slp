@@ -155,13 +155,20 @@ module Yast
     end
 
     module DnsCache
+      extend ::Yast::Logger
+
       def self.resolve(ip_address)
         host = find(ip_address)
-        return host if host
-
-        host = Resolv.getname(ip_address)
-        update(ip_address => host)
-        host
+        if host.nil?
+          host = Resolv.getname(ip_address)
+          update(ip_address => host)
+        end
+      rescue StandardError, Timeout::Error => e
+        log.error(
+          "Name resolution failed for given SLP service IP address; " + e.message
+        )
+      ensure
+        return host
       end
 
       def self.entries
