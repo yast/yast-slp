@@ -17,7 +17,7 @@
 
 
 Name:           yast2-slp
-Version:        3.1.5
+Version:        3.1.6
 Release:        0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -34,12 +34,11 @@ BuildRequires:  libxcrypt-devel
 Requires:       openslp yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 
-Summary:	YaST2 - SLP Agent and Browser
+Summary:	YaST2 - SLP Agent and Library
 Url: https://github.com/yast/yast-slp
 
 %description
-This module enables YaST modules to register services with SLP.
-Additionally, it offers a simple browser of SLP registered services.
+This package provides YaST modules to lookup/advertise services with SLP.
 
 %prep
 %setup -n %{name}-%{version}

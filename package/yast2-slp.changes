@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Apr 16 15:13:13 UTC 2014 - vmoravec@suse.com
+
+- Correct summary and description in spec file (bnc#868453)
+- 3.1.6
+
+-------------------------------------------------------------------
 Mon Mar 10 14:13:13 UTC 2014 - vmoravec@suse.com
 
 - Fix dns resolution exception (bnc#867357)
