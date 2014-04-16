@@ -34,7 +34,7 @@ BuildRequires:  libxcrypt-devel
 Requires:       openslp yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 
-Summary:	YaST2 - SLP Agent
+Summary:	YaST2 - SLP Agent and Library
 Url: https://github.com/yast/yast-slp
 
 %description
