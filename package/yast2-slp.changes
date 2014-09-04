@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Sep  4 12:30:59 UTC 2014 - mvidner@suse.com
+
+- Use a more flexible rubygem requirement syntax (bnc#895069)
+- 3.1.7
+
+-------------------------------------------------------------------
 Wed Apr 16 15:13:13 UTC 2014 - vmoravec@suse.com
 
 - Correct summary and description in spec file (bnc#868453)
