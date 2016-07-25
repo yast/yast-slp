@@ -22,7 +22,7 @@ module Yast
       Yast.import "Label"
       Yast.import "Report"
 
-      # @return [Array<SlpServiceClass::Service] list of services to show
+      # @return [Array<SlpServiceClass::Service>] list of services to show
       attr_reader :services
       # @return [String] dialog's heading
       attr_reader :heading
@@ -40,11 +40,11 @@ module Yast
       # * :cancel symbol if the dialog was canceled
       #
       # @example Select some service
-      #   Yast::Dialogs::SelectionServiceDialog.run(services) #=> :scc
+      #   Yast::Dialogs::SelectionService.run(services: services) #=> :scc
       #     #=> #<Yast::SlpServiceClass::Service...>
       #
       # @example Press the 'cancel' button
-      #   Yast::Dialogs::SelectionServiceDialog.run(services) #=> :cancel
+      #   Yast::Dialogs::SelectionService.run(services: services) #=> :cancel
       #
       # @param services        [Array<SlpServiceClass::Service] list of services to show
       # @param heading         [String] Dialog's heading
@@ -61,11 +61,15 @@ module Yast
       # Constructor
       #
       # @param services        [Array<SlpServiceClass::Service>] list of services to show
-      # @param heading         [String] Dialog's heading
-      # @param description     [String] Dialog's description (to be shown on top of the list)
+      # @param heading         [String] Dialog's heading. If nil (or not specified), a default
+      #                                 heading will be used).
+      # @param description     [String] Dialog's description (to be shown on top of the list).
+      #                                 If nil (or not specified) a default description will be used.
       # @param no_selected_msg [String] Message to be shown when no service was selected
-      # @param initial         [SlpServiceClass::Service] initially selected service
-      def initialize(services: [], heading: nil, description: nil, no_selected_msg: nil, initial: nil)
+      #                                 If nil (or not specified) a default description will be used.
+      # @param initial         [SlpServiceClass::Service] initially selected service. If nil
+      #                                 (or not specified) the first service will be used.
+      def initialize(services:, heading: nil, description: nil, no_selected_msg: nil, initial: nil)
         super()
 
         textdomain "registration"
