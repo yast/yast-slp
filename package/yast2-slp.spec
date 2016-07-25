@@ -58,4 +58,8 @@ This package provides YaST modules to lookup/advertise services with SLP.
 %{yast_plugindir}/libpy2ag_slp.la
 %{yast_moduledir}/SLP.rb
 %{yast_moduledir}/SlpService.rb
+%{yast_moduledir}/SlpService.rb
+%dir %{yast_libdir}/slp
+%dir %{yast_libdir}/slp/dialogs
+%{yast_libdir}/slp/dialogs/*
 %doc %{yast_docdir}
