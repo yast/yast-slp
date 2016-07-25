@@ -102,7 +102,7 @@ module Yast
         name = type_parts[1]
         protocol = type_parts[2]
       else
-        raise "Incorrect slp service type: #{service.inspect}"
+        raise "Incorrect slp service type: #{service_type.inspect}"
       end
       OpenStruct.new :name => name, :protocol => protocol
     end
