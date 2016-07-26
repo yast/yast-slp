@@ -17,7 +17,7 @@
 
 
 Name:           yast2-slp
-Version:        3.1.8
+Version:        3.1.9
 Release:        0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -58,4 +58,7 @@ This package provides YaST modules to lookup/advertise services with SLP.
 %{yast_plugindir}/libpy2ag_slp.la
 %{yast_moduledir}/SLP.rb
 %{yast_moduledir}/SlpService.rb
+%dir %{yast_libdir}/slp
+%dir %{yast_libdir}/slp/dialogs
+%{yast_libdir}/slp/dialogs/*
 %doc %{yast_docdir}
