@@ -107,9 +107,9 @@ module Yast
         MarginBox(2, 0.5,
           VBox(
             # popup heading (in bold)
-            Heading(heading),
+            Left(Heading(heading)),
             VSpacing(0.5),
-            Label(description),
+            Left(Label(description)),
             VSpacing(0.5),
             RadioButtonGroup(
               Id(:services),

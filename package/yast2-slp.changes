@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep  1 12:23:00 UTC 2016 - lslezak@suse.cz
+
+- Align left the labels in the SLP service popup, unify it with the
+  other popup dialogs in YaST (bsc#996846)
+- 3.1.10
+
+-------------------------------------------------------------------
 Mon Jul 25 09:36:32 UTC 2016 - igonzalezsosa@suse.com
 
 - Add a ServiceSelectionDialog to be used by others YaST2 modules
