@@ -72,7 +72,7 @@ module Yast
       def initialize(services:, heading: nil, description: nil, no_selected_msg: nil, initial: nil)
         super()
 
-        textdomain "registration"
+        textdomain "slp"
 
         @services = services
         @heading = heading || _("Service selection")
