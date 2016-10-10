@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 10 15:25:22 UTC 2016 - cwh@suse.com
+
+- Changed text domain to 'slp' 
+- 3.1.11 
+
+-------------------------------------------------------------------
 Thu Sep  1 12:23:00 UTC 2016 - lslezak@suse.cz
 
 - Align left the labels in the SLP service popup, unify it with the
