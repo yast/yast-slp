@@ -26,7 +26,6 @@ stamp-h*
 .dep
 .deps
 package/*.tar.bz2
-package/*.spec
 agent-slp/doc/autodocs/*.html
 agent-slp/doc/autodocs/*.png
 agent-slp/doc/autodocs/*.js
