@@ -40,3 +40,10 @@ agent-slp/src/*.la
 testsuite/site.exp
 testsuite/*.log
 testsuite/*.sum
+/.yardoc
+/coverage
+/doc
+!/doc/rfc2608.txt
+*.log
+*.trs
+/test-driver
