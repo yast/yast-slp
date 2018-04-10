@@ -42,3 +42,4 @@ testsuite/*.log
 testsuite/*.sum
 /.yardoc
 /coverage
+doc/autodocs
