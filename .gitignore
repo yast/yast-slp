@@ -13,6 +13,7 @@ config.status
 config.sub
 configure
 configure.ac
+compile
 depcomp
 install-sh
 libtool
@@ -39,3 +40,5 @@ agent-slp/src/*.la
 testsuite/site.exp
 testsuite/*.log
 testsuite/*.sum
+/.yardoc
+/coverage
