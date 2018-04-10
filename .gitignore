@@ -43,3 +43,6 @@ testsuite/*.sum
 /.yardoc
 /coverage
 doc/autodocs
+*.log
+*.trs
+test-driver
