@@ -62,3 +62,4 @@ This package provides YaST modules to lookup/advertise services with SLP.
 %dir %{yast_libdir}/slp/dialogs
 %{yast_libdir}/slp/dialogs/*
 %doc %{yast_docdir}
+%license COPYING
