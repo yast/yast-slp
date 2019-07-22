@@ -13,7 +13,9 @@ config.status
 config.sub
 configure
 configure.ac
+coverage/
 depcomp
+doc/autodocs
 install-sh
 libtool
 ltmain.sh
@@ -36,6 +38,10 @@ doc/autodocs/*.html
 agent-slp/src/.libs/
 agent-slp/src/*.lo
 agent-slp/src/*.la
+test/**/*.log
+test/**/*.trs
 testsuite/site.exp
 testsuite/*.log
 testsuite/*.sum
+test-driver
+.yardoc/
