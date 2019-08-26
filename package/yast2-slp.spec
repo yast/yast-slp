@@ -17,7 +17,7 @@
 
 
 Name:           yast2-slp
-Version:        4.1.0
+Version:        4.1.1
 Release:        0
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
@@ -27,7 +27,7 @@ Group:	        System/YaST
 License:        GPL-2.0-or-later
 BuildRequires:	gcc-c++ openslp-devel doxygen perl-XML-Writer yast2-core-devel yast2 libtool
 BuildRequires:  yast2-devtools >= 3.1.10
-BuildRequires:  rubygem(rspec)
+BuildRequires:  rubygem(%{rb_default_ruby_abi}:rspec)
 %if 0%{?suse_version} < 1220
 BuildRequires:  libxcrypt-devel
 %endif
