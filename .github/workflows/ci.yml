@@ -31,18 +31,6 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  Rubocop:
-    runs-on: ubuntu-latest
-    container: registry.opensuse.org/yast/head/containers/yast-ruby:latest
-
-    steps:
-
-    - name: Git Checkout
-      uses: actions/checkout@v2
-
-    - name: Rubocop
-      run: rake check:rubocop
-
   Package:
     runs-on: ubuntu-latest
     container: registry.opensuse.org/yast/head/containers/yast-ruby:latest
