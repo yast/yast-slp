@@ -49,7 +49,6 @@ module Yast
       # @param services        [Array<SlpServiceClass::Service] list of services to show
       # @param heading         [String] Dialog's heading
       # @param description     [String] Dialog's description (to be shown on top of the list)
-      # @param no_selected_msg [String] Message to be shown when no service was selected
       # @return [SlpServiceClass::Service,Symbol] selected service or :cancel symbol
       #
       # @see #run
