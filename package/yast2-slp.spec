@@ -1,7 +1,7 @@
 #
 # spec file for package yast2-slp
 #
-# Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2023 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -23,19 +23,26 @@ Release:        0
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        %{name}-%{version}.tar.bz2
 
-Group:	        System/YaST
+Group:          System/YaST
 License:        GPL-2.0-or-later
-BuildRequires:	gcc-c++ openslp-devel doxygen perl-XML-Writer yast2-core-devel yast2 libtool
+BuildRequires:  doxygen
+BuildRequires:  gcc-c++
+BuildRequires:  libtool
+BuildRequires:  openslp-devel
+BuildRequires:  perl-XML-Writer
+BuildRequires:  yast2
+BuildRequires:  yast2-core-devel
 BuildRequires:  yast2-devtools >= 3.1.10
 BuildRequires:  rubygem(%{rb_default_ruby_abi}:rspec)
 %if 0%{?suse_version} < 1220
 BuildRequires:  libxcrypt-devel
 %endif
-Requires:       openslp yast2
+Requires:       openslp
+Requires:       yast2
 Requires:       yast2-ruby-bindings >= 1.0.0
 
-Summary:	YaST2 - SLP Agent and Library
-Url: https://github.com/yast/yast-slp
+Summary:        YaST2 - SLP Agent and Library
+URL:            https://github.com/yast/yast-slp
 
 %description
 This package provides YaST modules to lookup/advertise services with SLP.
@@ -48,7 +55,6 @@ This package provides YaST modules to lookup/advertise services with SLP.
 
 %install
 %yast_install
-
 
 %files
 %defattr(-,root,root)
@@ -63,3 +69,5 @@ This package provides YaST modules to lookup/advertise services with SLP.
 %{yast_libdir}/slp/dialogs/*
 %doc %{yast_docdir}
 %license COPYING
+
+%changelog
